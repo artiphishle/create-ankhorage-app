@@ -9,7 +9,7 @@ terraform {
     organization = "Ankhorage"
 
     workspaces {
-      name = "tf-test"
+      name = "ankhtest"
     }
   }
 }
