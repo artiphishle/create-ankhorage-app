@@ -1,5 +1,17 @@
 provider "aws" {
-  region = "us-east-1"
+  region     = "us-east-1"
+  access_key = var.AWS_ACCESS_KEY_ID
+  secret_key = var.AWS_SECRET_ACCESS_KEY
+}
+
+terraform {
+  cloud {
+    organization = "Ankhorage"
+
+    workspaces {
+      name = "tf-test"
+    }
+  }
 }
 
 # Create Cognito User Pool for Authentication
