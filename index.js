@@ -3,10 +3,11 @@
 const { execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
+const prompts = require("@inquirer/prompts");
 
 const createApp = async () => {
   // Step 1: Ask for the app name
-  const { appName } = await require("@inquirer/prompts").input({
+  const appName = await prompts.input({
     type: "text",
     name: "appName",
     message: "Enter the name of the app:",
