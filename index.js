@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
-import path from 'path';
-import { execSync } from 'child_process';
-import prompts from '@inquirer/prompts';
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+const prompts = require('@inquirer/prompts');
 
 // Define a function to create files and directories
 async function createApp() {
   // Ask for the app name
   const appName = await prompts.input({ message: 'Enter your app name:' });
 
-  // Create a directory with the app name
+  // Define paths
   const appDir = path.join(process.cwd(), appName);
   const terraformDir = path.join(appDir, 'terraform');
 
@@ -20,6 +20,7 @@ async function createApp() {
     return;
   }
 
+  // Create app and terraform directories
   fs.mkdirSync(appDir);
   fs.mkdirSync(terraformDir);
 
@@ -35,10 +36,10 @@ async function createApp() {
   };
   fs.writeFileSync(path.join(appDir, 'config.json'), JSON.stringify(configJson, null, 2));
 
-  // Terraform configuration for S3 bucket
-  const terraformConfig = `
+  // Write main Terraform file to set up AWS S3 and Amplify resources
+  const mainTfContent = `
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-1"  // Adjust as needed
 }
 
 resource "aws_s3_bucket" "example" {
@@ -46,22 +47,30 @@ resource "aws_s3_bucket" "example" {
   acl    = "private"
 }
 
+resource "aws_amplify_app" "example" {
+  name = "${appName}"
+  repository = "https://github.com/your/repository.git"  // Replace with actual repo if needed
+}
+
 output "bucket_name" {
   value = aws_s3_bucket.example.bucket
 }
 `;
 
-  fs.writeFileSync(path.join(terraformDir, 'main.tf'), terraformConfig);
+  fs.writeFileSync(path.join(terraformDir, 'main.tf'), mainTfContent);
 
   // Run Terraform init and apply
   try {
-    execSync('terraform init', { cwd: terraformDir, stdio: 'inherit' });
-    execSync('terraform apply -auto-approve', { cwd: terraformDir, stdio: 'inherit' });
-    console.log('Terraform resources created successfully.');
+    console.log('Initializing Terraform...');
+    execSync(`terraform -chdir=${terraformDir} init`, { stdio: 'inherit' });
+
+    console.log('Applying Terraform...');
+    execSync(`terraform -chdir=${terraformDir} apply -auto-approve`, { stdio: 'inherit' });
+
+    console.log('App and infrastructure setup complete.');
   } catch (error) {
     console.error('Terraform apply failed:', error);
   }
 }
 
-// Run the setup process
 createApp();
