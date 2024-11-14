@@ -20,7 +20,7 @@ const createApp = async () => {
   fs.mkdirSync(terraformDir, { recursive: true });
 
   ["main.tf", "variables.tf", "terraform.tfvars"].forEach((tfFile) =>
-    fs.copyFileSync(path.join(ttTplPath, tfFile), path.join(terraformDir, tfFile)));
+    fs.copyFileSync(path.join(tfTplPath, tfFile), path.join(terraformDir, tfFile)));
 
   // Step 3: Run Terraform to deploy infrastructure
   console.log("Running Terraform to deploy infrastructure...");
