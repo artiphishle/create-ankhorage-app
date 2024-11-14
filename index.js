@@ -1,108 +1,65 @@
-#!/usr/bin/env node
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
+import prompts from '@inquirer/prompts';
 
-const prompts = require("@inquirer/prompts");
-const shell = require("shelljs");
-const fs = require("fs");
-const path = require("path");
+// Define a function to create files and directories
+async function createApp() {
+  // Ask for the app name
+  const appName = await prompts.input({ message: 'Enter your app name:' });
 
-async function setup() {
-  // Step 1: Prompt for app name
-  const appName = await prompts.input({ message: "Enter your app name:" });
-
-  // Step 2: Define directory paths
+  // Create a directory with the app name
   const appDir = path.join(process.cwd(), appName);
-  const terraformDir = path.join(appDir, "terraform");
+  const terraformDir = path.join(appDir, 'terraform');
 
-  // Step 3: Create app folder and terraform folder
-  shell.mkdir("-p", terraformDir);
-  console.log(`Created app directory: ${appDir}`);
-  console.log(`Created Terraform directory: ${terraformDir}`);
-
-  // Step 4: Prompt for AWS and Terraform details
-  const awsAccessKey = await prompts.input({ message: "Enter your AWS Access Key:" });
-  const awsSecretKey = await prompts.input({ message: "Enter your AWS Secret Key:" });
-  const terraformWorkspace = await prompts.input({ message: "Enter your Terraform workspace name:" });
-
-  // Step 5: Configure AWS credentials in the environment
-  shell.env["AWS_ACCESS_KEY_ID"] = awsAccessKey;
-  shell.env["AWS_SECRET_ACCESS_KEY"] = awsSecretKey;
-
-  // Step 6: Create Terraform configuration files in the terraform directory
-  const terraformConfig = `
-  provider "aws" {
-    region     = "us-east-1"
-    access_key = "${awsAccessKey}"
-    secret_key = "${awsSecretKey}"
+  // Check if the directory already exists
+  if (fs.existsSync(appDir)) {
+    console.log(`Directory ${appName} already exists.`);
+    return;
   }
 
-  terraform {
-    required_providers {
-      aws = {
-        source  = "hashicorp/aws"
-        version = "~> 4.0"
-      }
-    }
-  }
+  fs.mkdirSync(appDir);
+  fs.mkdirSync(terraformDir);
 
-  resource "aws_s3_bucket" "example" {
-    bucket = "${appName}-bucket"
-    acl    = "private"
-  }
-  `;
-
-  fs.writeFileSync(path.join(terraformDir, "main.tf"), terraformConfig);
-  console.log("Terraform configuration file created in the terraform folder.");
-
-  // Step 7: Run Terraform commands inside the terraform directory
-  shell.cd(terraformDir);
-  console.log("Initializing Terraform...");
-  if (shell.exec("terraform init").code !== 0) {
-    console.error("Error: Terraform initialization failed.");
-    process.exit(1);
-  }
-
-  console.log(`Setting Terraform workspace to ${terraformWorkspace}...`);
-  if (
-    shell.exec(
-      `terraform workspace select ${terraformWorkspace} || terraform workspace new ${terraformWorkspace}`
-    ).code !== 0
-  ) {
-    console.error("Error: Failed to set up Terraform workspace.");
-    process.exit(1);
-  }
-
-  console.log("Applying Terraform configuration...");
-  if (shell.exec("terraform apply -auto-approve").code !== 0) {
-    console.error("Error: Terraform apply failed.");
-    process.exit(1);
-  }
-
-  generateReactNativeApp(appDir);
-}
-
-function generateReactNativeApp(appDir) {
-  console.log("Generating React Native app...");
-
-  const defaultConfig = {
-    components: [
+  // Create a basic JSON config file
+  const configJson = {
+    pages: [
       {
-        name: "HomePage",
-        text: "Welcome to Ankhorage!",
-      },
-    ],
+        name: "Home",
+        component: "HomePage",
+        content: "Welcome to your new app!"
+      }
+    ]
   };
+  fs.writeFileSync(path.join(appDir, 'config.json'), JSON.stringify(configJson, null, 2));
 
-  // Step 8: Write default config.json in the app directory
-  fs.writeFileSync(path.join(appDir, "config.json"), JSON.stringify(defaultConfig, null, 2));
-  console.log("Default config.json created.");
-
-  shell.cd(appDir);
-  if (shell.exec("npx react-native init " + path.basename(appDir)).code !== 0) {
-    console.error("Error: Failed to initialize React Native app.");
-    process.exit(1);
-  }
-
-  console.log("React Native app created successfully.");
+  // Terraform configuration for S3 bucket
+  const terraformConfig = `
+provider "aws" {
+  region = "us-east-1"
 }
 
-setup();
+resource "aws_s3_bucket" "example" {
+  bucket = "${appName}-bucket"
+  acl    = "private"
+}
+
+output "bucket_name" {
+  value = aws_s3_bucket.example.bucket
+}
+`;
+
+  fs.writeFileSync(path.join(terraformDir, 'main.tf'), terraformConfig);
+
+  // Run Terraform init and apply
+  try {
+    execSync('terraform init', { cwd: terraformDir, stdio: 'inherit' });
+    execSync('terraform apply -auto-approve', { cwd: terraformDir, stdio: 'inherit' });
+    console.log('Terraform resources created successfully.');
+  } catch (error) {
+    console.error('Terraform apply failed:', error);
+  }
+}
+
+// Run the setup process
+createApp();
