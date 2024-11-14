@@ -16,7 +16,7 @@ const createApp = async () => {
 
   // Step 2: Initialize Terraform files for Amplify and Cognito using the app name as a prefix
   const terraformDir = path.join(process.cwd(), appName, "terraform");
-  fs.mkdirSync(terraformDir);
+  fs.mkdirSync(terraformDir, { recursive: true });
 
   const terraformConfig = `provider "aws" {
     region = "us-east-1"
