@@ -1,37 +1,19 @@
 #!/usr/bin/env node
 
-const inquirer = require("inquirer");
+const prompts = require("@inquirer/prompts");
 const shell = require("shelljs");
 const fs = require("fs");
 const path = require("path");
 
 async function setup() {
-  const responses = await inquirer.prompt([
-    {
-      type: "input",
-      name: "aws_access_key",
-      message: "Enter your AWS Access Key:",
-    },
-    {
-      type: "input",
-      name: "aws_secret_key",
-      message: "Enter your AWS Secret Key:",
-    },
-    {
-      type: "input",
-      name: "terraform_organization",
-      message: "Enter your Terraform organization name:",
-    },
-    {
-      type: "input",
-      name: "terraform_workspace",
-      message: "Enter your Terraform workspace name:",
-    },
-  ]);
+  const awsAccessKey = await prompts.input({ message: "Enter your AWS Access Key:" });
+  const awsSecretKey = await prompts.input({ message: "Enter your AWS Secret Key:" });
+  // const terraformOrganization = await prompts.input({ message: "Enter your Terraform organization name:" });
+  const terraformWorkspace = await prompts.input({ message: "Enter your Terraform workspace name:" });
 
   // Configure AWS credentials in the environment
-  shell.env["AWS_ACCESS_KEY_ID"] = responses.aws_access_key;
-  shell.env["AWS_SECRET_ACCESS_KEY"] = responses.aws_secret_key;
+  shell.env["AWS_ACCESS_KEY_ID"] = awsAccessKey;
+  shell.env["AWS_SECRET_ACCESS_KEY"] = awsSecretKey;
 
   // Run Terraform commands using shelljs
   console.log("Initializing Terraform...");
@@ -40,10 +22,10 @@ async function setup() {
     process.exit(1);
   }
 
-  console.log(`Setting Terraform workspace to ${responses.terraform_workspace}...`);
+  console.log(`Setting Terraform workspace to ${terraformWorkspace}...`);
   if (
     shell.exec(
-      `terraform workspace select ${responses.terraform_workspace} || terraform workspace new ${responses.terraform_workspace}`
+      `terraform workspace select ${terraformWorkspace} || terraform workspace new ${terraformWorkspace}`
     ).code !== 0
   ) {
     console.error("Error: Failed to set up Terraform workspace.");
