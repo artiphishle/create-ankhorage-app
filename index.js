@@ -22,7 +22,7 @@ const createApp = async () => {
   ["main.tf", "variables.tf"].forEach((tfFile) =>
     fs.copyFileSync(path.join(tfTplPath, tfFile), path.join(terraformDir, tfFile)));
 
-  fs.writeFileSync(path.join(terraformDir, "terraform.tfvars"), `oauth_token=${process.env.GH_OAUTH_TOKEN}`)
+  fs.writeFileSync(path.join(terraformDir, "terraform.tfvars"), `oauth_token="${process.env.GH_OAUTH_TOKEN}"`)
 
   // Step 3: Run Terraform to deploy infrastructure
   console.log("Running Terraform to deploy infrastructure...");
