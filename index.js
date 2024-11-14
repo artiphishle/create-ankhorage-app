@@ -57,7 +57,6 @@ const createApp = async () => {
     platform    = "WEB"
 
     repository  = "https://github.com/artiphishle/ankh-native-app"
-    iam_service_role = aws_iam_role.amplify_service_role.arn
 
     build_spec = <<BUILD_SPEC
 version: 1
