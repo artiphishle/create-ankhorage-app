@@ -82,7 +82,7 @@ BUILD_SPEC
   }
 
   output "amplify_app_url" {
-    value = aws_amplify_app.amplify_app.app_url
+    value = aws_amplify_app.amplify_app.default_domain
   }
   `;
 
