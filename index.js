@@ -14,22 +14,20 @@ const createApp = async () => {
     initial: "ankhorage-app"
   });
 
-  // Step 2: Initialize Terraform files for Amplify and Cognito using the app name as a prefix
-  const tfTplPath = path.join(__dirname, "terraform");
-  const terraformDir = path.join(process.cwd(), appName, "terraform");
-  fs.mkdirSync(terraformDir, { recursive: true });
+  // Step 2: Clone Native App
+  execSync(`git clone https://github.com/artiphishle/ankh-native-app.git ${appName} && cd ${appName}`);
 
-  ["main.tf", "variables.tf"].forEach((tfFile) =>
-    fs.copyFileSync(path.join(tfTplPath, tfFile), path.join(terraformDir, tfFile)));
+  // Step 3: Install app
+  execSync(`npm i`);
+  console.log("Native app installed.")
 
-  fs.writeFileSync(path.join(terraformDir, "terraform.tfvars"), `oauth_token="${process.env.GH_OAUTH_TOKEN}"`)
+  // Step 4: Setup Amplify
+  execSync(`amplify init`);
+  console.log("Amplify setup done.");
 
-  // Step 3: Run Terraform to deploy infrastructure
-  console.log("Running Terraform to deploy infrastructure...");
-  execSync("terraform init", { cwd: terraformDir });
-  execSync("terraform apply -auto-approve", { cwd: terraformDir });
-
-  console.log("Infrastructure deployed.");
+  // Step 5: Setup Cognito Auth
+  execSync(`amplify auth`);
+  console.log("Cognito auth setup done.");
 };
 
 createApp();
