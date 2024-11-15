@@ -5,14 +5,14 @@ variable "oauth_token" {
   default     = ""
 }
 
-variable "AWS_ACCESS_KEY_ID" {
-  description = "AWS Access key id"
+variable "AMPLIFY_ACCESS_KEY_ID" {
+  description = "AWS Amplify Access key id"
   type        = string
   default     = ""
 }
 
-variable "AWS_SECRET_ACCESS_KEY" {
-  description = "AWS Secret Acces key"
+variable "AMPLIFY_SECRET_ACCESS_KEY" {
+  description = "AWS Amplify Secret Acces key"
   type        = string
   default     = ""
 }
