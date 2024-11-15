@@ -15,18 +15,18 @@ const createApp = async () => {
   });
 
   // Step 2: Clone Native App
-  execSync(`git clone https://github.com/artiphishle/ankh-native-app.git ${appName} && cd ${appName}`);
+  execSync(`git clone https://github.com/artiphishle/ankh-native-app.git ${appName}`);
 
   // Step 3: Install app
-  execSync(`npm i`);
+  execSync(`npm i`, { cwd: appName });
   console.log("Native app installed.")
 
   // Step 4: Setup Amplify
-  execSync(`amplify init`);
+  execSync(`amplify init`, { cwd: appName });
   console.log("Amplify setup done.");
 
   // Step 5: Setup Cognito Auth
-  execSync(`amplify auth`);
+  execSync(`amplify auth`, { cwd: appName });
   console.log("Cognito auth setup done.");
 };
 
