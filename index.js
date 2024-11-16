@@ -10,7 +10,7 @@ const writeTitle = () => {
   execSync("echo - - - - - - - - -", { stdio: 'inherit' });
   execSync("echo", { stdio: 'inherit' });
   execSync("echo", { stdio: 'inherit' });
-  execSync("Info: echo Make sure ENV's are set: 'AMPLIFY_ACCESS_KEY_ID' & 'AMPLIFY_SECRET_ACCESS_KEY'")
+  execSync("echo Info: Make sure ENV's are set: 'AMPLIFY_ACCESS_KEY_ID' & 'AMPLIFY_SECRET_ACCESS_KEY'");
 };
 
 const createApp = async () => {
