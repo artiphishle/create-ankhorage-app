@@ -76,7 +76,7 @@ function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey }) {
   await execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey }, { cwd });
 
   // Optional features (see 'flags' in config/common.json)
-  const { amplify: { flags } } = newCommmon;
+  const { amplify: { flags } } = newCommon;
   flags.auth && execAmplifyAddAuth({ ...newCommon, accessKeyId, secretAccessKey }, { cwd });
   flags.push && execSyncInherit('amplify push', { cwd });
   flags.hosting && execSyncInherit('amplify hosting', { cwd });
