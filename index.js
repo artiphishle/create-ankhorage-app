@@ -15,10 +15,10 @@ function execSyncInherit(cmd, o = {}) {
   execSync(cmd, { ...o, stdio: 'inherit' });
 }
 function printTitle() {
-  execSync("echo", { stdio: 'inherit' });
-  execSync("echo A N K H O R A G E", { stdio: 'inherit' });
-  execSync("echo - - - - - - - - -", { stdio: 'inherit' });
-  execSync("echo", { stdio: 'inherit' });
+  execSyncInherit("echo");
+  execSyncInherit("echo A N K H O R A G E");
+  execSyncInherit("echo - - - - - - - - -");
+  execSyncInherit("echo");
 };
 async function getPromptData({ initialProjectName }) {
   const projectName = await prompts.input({
@@ -45,7 +45,7 @@ async function getPromptData({ initialProjectName }) {
 function cloneBoilerplate({ boilerplate, projectName }) {
   execSync(`git clone ${boilerplate} ${projectName}`);
 }
-async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projectName, cwd }) {
+function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projectName, cwd }) {
   const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(conf.amplify, "utf-8"));
 
   providers.awscloudformation.region = region;
@@ -60,6 +60,7 @@ async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, 
     --yes`, { cwd });
 }
 function execAmplifyAddAuth({ cwd }) {
+  console.log('cwd:', cwd);
   try {
     execSyncInherit(`amplify auth add --headless --profile amplify --config-file ${conf.auth} --debug`, { cwd });
   } catch (error) {
@@ -71,15 +72,16 @@ function execAmplifyAddAuth({ cwd }) {
  * Entrypoint
  */
 (async function createApp() {
+  printTitle();
+
   const common = JSON.parse(fs.readFileSync(conf.common, "utf-8"));
   const { projectName, accessKeyId, secretAccessKey } = await getPromptData(common);
   const newCommon = { ...common, projectName };
   const cwd = resolve(process.cwd(), projectName);
 
-  printTitle();
   cloneBoilerplate(newCommon);
 
-  await execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey, cwd });
+  execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey, cwd });
 
   // Optional features (see 'flags' in config/common.json)
   const { amplify: { flags } } = newCommon;
