@@ -1,34 +1,81 @@
 #!/usr/bin/env node
 
-const { execSync } = require("child_process");
+const { join } = require("path");
 const prompts = require("@inquirer/prompts");
-const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
+const { execSync } = require("child_process");
 
-const writeTitle = () => {
+function execSyncInherit(cmd, o = {}) {
+  execSync(cmd, { ...o, stdio: 'inherit' });
+}
+function printTitle() {
   execSync("echo", { stdio: 'inherit' });
   execSync("echo A N K H O R A G E", { stdio: 'inherit' });
   execSync("echo - - - - - - - - -", { stdio: 'inherit' });
   execSync("echo", { stdio: 'inherit' });
-  execSync("echo", { stdio: 'inherit' });
-  execSync("echo Info: \"Make sure ENV's are set: 'AMPLIFY_ACCESS_KEY_ID' & 'AMPLIFY_SECRET_ACCESS_KEY'\"");
 };
-
-const createApp = async () => {
-  writeTitle();
-
-  // Step 1: Ask for the app name
-  const appName = await prompts.input({
+async function getPromptData({ initialProjectName }) {
+  const projectName = await prompts.input({
     type: "text",
-    name: "appName",
-    message: "Enter the name of the app:",
-    initial: "ankhorage-app"
+    name: "projectName",
+    message: "Enter the name of the project:",
+    initial: initialProjectName
   });
 
-  // Step 2: Clone Native App
-  execSync(`git clone ${boilerplate} ${appName}`);
+  const accessKeyId = await prompts.input({
+    type: "text",
+    name: "accessKeyId",
+    message: "Enter AWS Access Key ID:"
+  });
 
-  // Step 3: Install App, Amplify, Cognito & publish
-  execSync(`npm i && amplify init && amplify add auth && amplify push && amplify hosting && amplify publish`, { cwd: appName, stdio: 'inherit' });
-};
+  const secretAccessKey = await prompts.input({
+    type: "text",
+    name: "secretAccessKey",
+    message: "Enter AWS Secret Access Key:"
+  });
 
-createApp();
+  return { projectName, accessKeyId, secretAccessKey };
+}
+function cloneBoilerplate({ boilerplate, projectName }) {
+  execSync(`git clone ${boilerplate} ${projectName}`);
+}
+async function execAmplifyInit({ accessKeyId, secretAccessKey, projectName }) {
+  const { amplify, frontend, providers } = JSON.parse(fs.readFileSync("config/amplify.json", "utf-8"));
+
+  providers.awscloudformation.accessKeyId = accessKeyId;
+  providers.awscloudformation.secretAccessKey = secretAccessKey;
+
+  execSyncInherit(`amplify init \
+    --amplify '${JSON.stringify({ ...amplify, projectName })}' \
+    --frontend '${JSON.stringify(frontend)}' \
+    --providers '${JSON.stringify(providers)}' \
+    --yes`);
+}
+function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey }) {
+  const config = JSON.parse(fs.readFileSync("config/auth.json", "utf-8"));
+
+  execSyncInherit(`amplify add auth --headless --amplify '{"projectName":"${projectName}","envName":"dev"}' \
+      --providers '{"awscloudformation":{"configLevel":"project","accessKeyId":"${accessKeyId}","secretAccessKey":"${secretAccessKey}","region":"${region}"}}' \
+      --categories '{"auth":${config}}'`);
+}
+/**
+ * Entrypoint
+ */
+(async function createApp() {
+  const common = JSON.parse(fs.readFileSync("config/common.json", "utf-8"));
+  const cwd = join(process.cwd(), common.projectName);
+  const { projectName, accessKeyId, secretAccessKey } = await getPromptData(common);
+  const newCommon = { ...common, projectName };
+
+  printTitle();
+
+  cloneBoilerplate(newCommon);
+
+  await execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey }, { cwd });
+
+  // Optional features (see 'flags' in config/common.json)
+  const { amplify: { flags } } = newCommmon;
+  flags.auth && execAmplifyAddAuth({ ...newCommon, accessKeyId, secretAccessKey }, { cwd });
+  flags.push && execSyncInherit('amplify push', { cwd });
+  flags.hosting && execSyncInherit('amplify hosting', { cwd });
+  flags.publish && execSyncInherit('amplify publish', { cwd });
+})();

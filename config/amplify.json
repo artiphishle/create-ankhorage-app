@@ -1,0 +1,22 @@
+{
+  "amplify": {
+    "envName": "dev",
+    "defaultEditor": "code"
+  },
+  "frontend": {
+    "frontend": "javascript",
+    "framework": "react",
+    "config": {
+      "SourceDir": ".",
+      "DistributionDir": "dist",
+      "BuildCommand": "npm run build:web",
+      "StartCommand": "npm run web"
+    }
+  },
+  "providers": {
+    "awscloudformation": {
+      "configLevel": "project",
+      "useProfile": false
+    }
+  }
+}
