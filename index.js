@@ -6,9 +6,9 @@ const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
 const dir = { config: resolve(__dirname, "config") };
 const conf = {
-  amplify: resolve(dir.conf, "amplify.json"),
-  auth: resolve(dir.conf, "auth.json"),
-  common: resolve(dir.conf, "common.json")
+  amplify: resolve(dir.config, "amplify.json"),
+  auth: resolve(dir.config, "auth.json"),
+  common: resolve(dir.config, "common.json")
 };
 
 function execSyncInherit(cmd, o = {}) {
