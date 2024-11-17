@@ -3,7 +3,7 @@
     "create-ankhorage-app": "index.js"
   },
   "name": "create-ankhorage-app",
-  "version": "1.0.46",
+  "version": "1.0.47",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
