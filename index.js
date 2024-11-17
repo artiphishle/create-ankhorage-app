@@ -56,7 +56,7 @@ async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, 
 function execAmplifyAddAuth({ cwd }) {
   const config = JSON.parse(fs.readFileSync(join(dir.config, "/auth.json"), "utf-8"));
 
-  execSyncInherit(`amplify add auth --headless --categories '${JSON.stringify({ "auth": config })}'`, { cwd });
+  execSyncInherit(`amplify add auth --headless --categories '${JSON.stringify({ auth: config })}'`, { cwd });
 }
 /**
  * Entrypoint
@@ -74,10 +74,6 @@ function execAmplifyAddAuth({ cwd }) {
 
   // Optional features (see 'flags' in config/common.json)
   const { amplify: { flags } } = newCommon;
-
-  execSync(`echo ">>>> flags.auth: ${flags.auth}"`, { cwd });
-  execSync("echo", { cwd });
-  execSync(`echo ${JSON.stringify(newCommon)}`, { cwd });
 
   flags.auth && execAmplifyAddAuth({ cwd });
   flags.push && execSyncInherit('amplify push', { cwd });
