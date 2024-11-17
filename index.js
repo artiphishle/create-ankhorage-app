@@ -48,13 +48,14 @@ async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, 
   providers.awscloudformation.secretAccessKey = secretAccessKey;
 
   execSyncInherit(`amplify init \
+    --profile amplify \
     --amplify '${JSON.stringify({ ...amplify, projectName })}' \
     --frontend '${JSON.stringify(frontend)}' \
     --providers '${JSON.stringify(providers)}' \
     --yes`, { cwd });
 }
 function execAmplifyAddAuth({ cwd }) {
-  execSyncInherit(`amplify auth add --headless --config-file ${join(dir.config, 'auth.json')}`, { cwd });
+  execSyncInherit(`amplify auth add --headless --profile amplify --config-file ${join(dir.config, 'auth.json')}`, { cwd });
 }
 /**
  * Entrypoint
