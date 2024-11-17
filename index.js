@@ -40,9 +40,10 @@ async function getPromptData({ initialProjectName }) {
 function cloneBoilerplate({ boilerplate, projectName }) {
   execSync(`git clone ${boilerplate} ${projectName}`);
 }
-async function execAmplifyInit({ accessKeyId, secretAccessKey, projectName }) {
+async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projectName }) {
   const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(join(dir.config, "amplify.json"), "utf-8"));
 
+  providers.awscloudformation.region = region;
   providers.awscloudformation.accessKeyId = accessKeyId;
   providers.awscloudformation.secretAccessKey = secretAccessKey;
 
