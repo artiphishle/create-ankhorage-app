@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
-const { join } = require("path");
+const { resolve } = require("path");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
-const dir = { config: join(__dirname, "config") };
+const dir = { config: resolve(__dirname, "config") };
+const conf = {
+  amplify: resolve(dir.conf, "amplify.json"),
+  auth: resolve(dir.conf, "auth.json"),
+  common: resolve(dir.conf, "common.json")
+};
 
 function execSyncInherit(cmd, o = {}) {
   execSync(cmd, { ...o, stdio: 'inherit' });
@@ -41,7 +46,7 @@ function cloneBoilerplate({ boilerplate, projectName }) {
   execSync(`git clone ${boilerplate} ${projectName}`);
 }
 async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projectName, cwd }) {
-  const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(join(dir.config, "amplify.json"), "utf-8"));
+  const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(conf.amplify, "utf-8"));
 
   providers.awscloudformation.region = region;
   providers.awscloudformation.accessKeyId = accessKeyId;
@@ -55,16 +60,21 @@ async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, 
     --yes`, { cwd });
 }
 function execAmplifyAddAuth({ cwd }) {
-  execSyncInherit(`amplify auth add --headless --profile amplify --config-file ${join(dir.config, 'auth.json')}`, { cwd });
+  try {
+    execSyncInherit(`amplify auth add --headless --profile amplify --config-file ${conf.auth} --debug`, { cwd });
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
 }
 /**
  * Entrypoint
  */
 (async function createApp() {
-  const common = JSON.parse(fs.readFileSync(join(dir.config, "common.json"), "utf-8"));
+  const common = JSON.parse(fs.readFileSync(conf.common, "utf-8"));
   const { projectName, accessKeyId, secretAccessKey } = await getPromptData(common);
   const newCommon = { ...common, projectName };
-  const cwd = join(process.cwd(), projectName);
+  const cwd = resolve(process.cwd(), projectName);
 
   printTitle();
   cloneBoilerplate(newCommon);
