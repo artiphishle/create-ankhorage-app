@@ -56,9 +56,11 @@ async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, 
 function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey, aws: { region } }) {
   const config = JSON.parse(fs.readFileSync(join(dir.config, "/auth.json"), "utf-8"));
 
-  execSyncInherit(`amplify add auth --headless --amplify '{"projectName":"${projectName}","envName":"dev"}' \
-      --providers '{"awscloudformation":{"configLevel":"project","accessKeyId":"${accessKeyId}","secretAccessKey":"${secretAccessKey}","region":"${region}"}}' \
-      --categories '{"auth":${config}}'`);
+  execSyncInherit(`amplify add auth \
+    --headless \
+    --amplify '{"projectName":"${projectName}","envName":"dev"}' \
+    --providers '{"awscloudformation":{"configLevel":"project","accessKeyId":"${accessKeyId}","secretAccessKey":"${secretAccessKey}","region":"${region}"}}' \
+    --categories '{"auth":${JSON.stringify(config)}}'`);
 }
 /**
  * Entrypoint
@@ -70,15 +72,15 @@ function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey, aws: { 
   const newCommon = { ...common, projectName };
 
   printTitle();
-
   cloneBoilerplate(newCommon);
+  process.chdir(projectName);
 
-  await execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey }, { cwd });
+  await execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey });
 
   // Optional features (see 'flags' in config/common.json)
   const { amplify: { flags } } = newCommon;
-  flags.auth && execAmplifyAddAuth({ ...newCommon, accessKeyId, secretAccessKey }, { cwd });
-  flags.push && execSyncInherit('amplify push', { cwd });
-  flags.hosting && execSyncInherit('amplify hosting', { cwd });
-  flags.publish && execSyncInherit('amplify publish', { cwd });
+  flags.auth && execAmplifyAddAuth({ ...newCommon, accessKeyId, secretAccessKey });
+  flags.push && execSyncInherit('amplify push');
+  flags.hosting && execSyncInherit('amplify hosting');
+  flags.publish && execSyncInherit('amplify publish');
 })();
