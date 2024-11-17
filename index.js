@@ -53,7 +53,7 @@ async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, 
     --providers '${JSON.stringify(providers)}' \
     --yes`);
 }
-function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey }) {
+function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey, aws: { region } }) {
   const config = JSON.parse(fs.readFileSync(join(dir.config, "/auth.json"), "utf-8"));
 
   execSyncInherit(`amplify add auth --headless --amplify '{"projectName":"${projectName}","envName":"dev"}' \
