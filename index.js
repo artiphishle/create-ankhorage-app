@@ -79,6 +79,6 @@ function execAmplifyAddAuth({ cwd }) {
 
   flags.auth && execAmplifyAddAuth({ cwd });
   flags.push && execSyncInherit('amplify push', { cwd });
-  flags.hosting && execSyncInherit('amplify hosting', { cwd });
+  flags.hosting && execSyncInherit('amplify hosting add', { cwd });
   flags.publish && execSyncInherit('amplify publish', { cwd });
 })();

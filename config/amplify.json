@@ -9,7 +9,7 @@
     "config": {
       "SourceDir": ".",
       "DistributionDir": "dist",
-      "BuildCommand": "npm run build:web",
+      "BuildCommand": "npm i && npm run build:web",
       "StartCommand": "npm run web"
     }
   },
