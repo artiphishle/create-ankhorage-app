@@ -67,9 +67,9 @@ function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey, aws: { 
  */
 (async function createApp() {
   const common = JSON.parse(fs.readFileSync(join(dir.config, "common.json"), "utf-8"));
-  const cwd = join(process.cwd(), common.projectName);
   const { projectName, accessKeyId, secretAccessKey } = await getPromptData(common);
   const newCommon = { ...common, projectName };
+  const cwd = join(process.cwd(), projectName);
 
   printTitle();
   cloneBoilerplate(newCommon);
