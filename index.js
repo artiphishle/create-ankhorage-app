@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const fs = require("fs");
 const { join } = require("path");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
