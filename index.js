@@ -40,7 +40,7 @@ async function getPromptData({ initialProjectName }) {
 function cloneBoilerplate({ boilerplate, projectName }) {
   execSync(`git clone ${boilerplate} ${projectName}`);
 }
-async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projectName }) {
+async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projectName, cwd }) {
   const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(join(dir.config, "amplify.json"), "utf-8"));
 
   providers.awscloudformation.region = region;
@@ -51,16 +51,16 @@ async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, 
     --amplify '${JSON.stringify({ ...amplify, projectName })}' \
     --frontend '${JSON.stringify(frontend)}' \
     --providers '${JSON.stringify(providers)}' \
-    --yes`);
+    --yes`, { cwd });
 }
-function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey, aws: { region } }) {
+function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey, aws: { region }, cwd }) {
   const config = JSON.parse(fs.readFileSync(join(dir.config, "/auth.json"), "utf-8"));
 
   execSyncInherit(`amplify add auth \
     --headless \
     --amplify '{"projectName":"${projectName}","envName":"dev"}' \
     --providers '{"awscloudformation":{"configLevel":"project","accessKeyId":"${accessKeyId}","secretAccessKey":"${secretAccessKey}","region":"${region}"}}' \
-    --categories '{"auth":${JSON.stringify(config)}}'`);
+    --categories '{"auth":${JSON.stringify(config)}}'`, { cwd });
 }
 /**
  * Entrypoint
@@ -73,14 +73,13 @@ function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey, aws: { 
 
   printTitle();
   cloneBoilerplate(newCommon);
-  process.chdir(projectName);
 
-  await execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey });
+  await execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey, cwd });
 
   // Optional features (see 'flags' in config/common.json)
   const { amplify: { flags } } = newCommon;
-  flags.auth && execAmplifyAddAuth({ ...newCommon, accessKeyId, secretAccessKey });
-  flags.push && execSyncInherit('amplify push');
-  flags.hosting && execSyncInherit('amplify hosting');
-  flags.publish && execSyncInherit('amplify publish');
+  flags.auth && execAmplifyAddAuth({ ...newCommon, accessKeyId, secretAccessKey, cwd });
+  flags.push && execSyncInherit('amplify push', { cwd });
+  flags.hosting && execSyncInherit('amplify hosting', { cwd });
+  flags.publish && execSyncInherit('amplify publish', { cwd });
 })();
