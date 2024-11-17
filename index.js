@@ -54,11 +54,7 @@ async function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, 
     --yes`, { cwd });
 }
 function execAmplifyAddAuth({ cwd }) {
-  /*
-  const config = JSON.parse(fs.readFileSync(join(dir.config, "auth.json"), "utf-8"));
-  execSyncInherit(`amplify add auth --headless '${JSON.stringify(config)}'`, { cwd });
-  */
-  execSyncInherit(`amplify add auth`, { cwd });
+  execSyncInherit(`amplify auth add --headless --config-file ${join(dir.config, 'auth.json')}`, { cwd });
 }
 /**
  * Entrypoint
