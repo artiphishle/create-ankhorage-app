@@ -81,7 +81,7 @@ function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey, aws: { 
 
   execSync(`echo ">>>> flags.auth: ${flags.auth}"`, { cwd });
   execSync("echo", { cwd });
-  execSync(`${JSON.stringify(newCommon)}`, { cwd });
+  execSync(`echo ${JSON.stringify(newCommon)}`, { cwd });
 
   flags.auth && execAmplifyAddAuth({ ...newCommon, accessKeyId, secretAccessKey, cwd });
   flags.push && execSyncInherit('amplify push', { cwd });
