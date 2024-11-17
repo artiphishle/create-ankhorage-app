@@ -41,7 +41,7 @@ function cloneBoilerplate({ boilerplate, projectName }) {
   execSync(`git clone ${boilerplate} ${projectName}`);
 }
 async function execAmplifyInit({ accessKeyId, secretAccessKey, projectName }) {
-  const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(join(dir.config, "amplify.json", "utf-8")));
+  const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(join(dir.config, "amplify.json"), "utf-8"));
 
   providers.awscloudformation.accessKeyId = accessKeyId;
   providers.awscloudformation.secretAccessKey = secretAccessKey;
@@ -53,7 +53,7 @@ async function execAmplifyInit({ accessKeyId, secretAccessKey, projectName }) {
     --yes`);
 }
 function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey }) {
-  const config = JSON.parse(fs.readFileSync(join(dir.config, "/auth.json", "utf-8")));
+  const config = JSON.parse(fs.readFileSync(join(dir.config, "/auth.json"), "utf-8"));
 
   execSyncInherit(`amplify add auth --headless --amplify '{"projectName":"${projectName}","envName":"dev"}' \
       --providers '{"awscloudformation":{"configLevel":"project","accessKeyId":"${accessKeyId}","secretAccessKey":"${secretAccessKey}","region":"${region}"}}' \
@@ -63,7 +63,7 @@ function execAmplifyAddAuth({ projectName, accessKeyId, secretAccessKey }) {
  * Entrypoint
  */
 (async function createApp() {
-  const common = JSON.parse(fs.readFileSync(join(dir.config, "common.json", "utf-8")));
+  const common = JSON.parse(fs.readFileSync(join(dir.config, "common.json"), "utf-8"));
   const cwd = join(process.cwd(), common.projectName);
   const { projectName, accessKeyId, secretAccessKey } = await getPromptData(common);
   const newCommon = { ...common, projectName };
