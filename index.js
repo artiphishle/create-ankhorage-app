@@ -4,6 +4,7 @@ const fs = require("fs");
 const { resolve } = require("path");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
+const { auth } = require("./config/auth");
 const dir = { config: resolve(__dirname, "config") };
 const conf = {
   amplify: resolve(dir.config, "amplify.json"),
@@ -62,7 +63,8 @@ function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projec
 function execAmplifyAddAuth({ cwd }) {
   console.log('cwd:', cwd);
   try {
-    execSyncInherit(`amplify auth add --headless --profile amplify --config-file ${conf.auth} --debug`, { cwd });
+    // const authConfig = JSON.stringify(auth);
+    execSyncInherit(`cat ${conf.auth} | jq -c | amplify add auth --headless`);
   } catch (error) {
     console.error(error);
     process.exit(1);
