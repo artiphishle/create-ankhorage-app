@@ -61,14 +61,7 @@ function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projec
     --yes`, { cwd });
 }
 function execAmplifyAddAuth({ cwd }) {
-  console.log('cwd:', cwd);
-  try {
-    // const authConfig = JSON.stringify(auth);
-    execSyncInherit(`cat ${conf.auth} | jq -c | amplify add auth --headless`, { cwd });
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
+  execSyncInherit(`cat ${conf.auth} | jq -c | amplify add auth --headless`, { cwd });
 }
 /**
  * Entrypoint
