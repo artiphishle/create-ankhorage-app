@@ -71,18 +71,18 @@ function execAmplifyAddAuth({ cwd }) {
 
   const common = JSON.parse(fs.readFileSync(conf.common, "utf-8"));
   const { projectName, accessKeyId, secretAccessKey } = await getPromptData(common);
-  const newCommon = { ...common, projectName };
+  const newCommon = { ...common, projectName, accessKeyId, secretAccessKey };
   const cwd = resolve(process.cwd(), projectName);
 
   cloneBoilerplate(newCommon);
 
-  execAmplifyInit({ ...newCommon, accessKeyId, secretAccessKey, cwd });
+  execAmplifyInit({ ...newCommon, cwd });
 
   // Optional features (see 'flags' in config/common.json)
   const { amplify: { flags } } = newCommon;
 
   flags.auth && execAmplifyAddAuth({ cwd });
-  flags.push && execSyncInherit('amplify push', { cwd });
-  flags.hosting && execSyncInherit('amplify hosting add', { cwd });
+  flags.hosting && execSyncInherit('amplify add hosting', { cwd });
+  flags.push && execSyncInherit('amplify push -y --debug', { cwd });
   flags.publish && execSyncInherit('amplify publish', { cwd });
 })();
