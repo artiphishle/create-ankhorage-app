@@ -15,9 +15,7 @@ const auth: AddAuthRequest = {
       signinMethod: CognitoUserPoolSigninMethod.EMAIL,
       requiredSignupAttributes: [
         CognitoUserProperty.EMAIL,
-        CognitoUserProperty.PREFERRED_USERNAME,
-        CognitoUserProperty.FAMILY_NAME,
-        CognitoUserProperty.GIVEN_NAME
+        CognitoUserProperty.NICKNAME
       ],
       passwordPolicy: {
         minimumLength: 8,

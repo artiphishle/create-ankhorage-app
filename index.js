@@ -1,30 +1,9 @@
-#!/usr/bin/env node
-
 require("dotenv").config();
-const fs = require("fs");
-const { resolve } = require("path");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
-const dir = { config: resolve(__dirname, "config/amplify") };
-const conf = {
-  amplify: resolve(dir.config, "amplify.json"),
-  auth: resolve(dir.config, "auth.json"),
-  common: resolve(dir.config, "common.json")
-};
+const execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
 
-function execSyncAwsHeadless(cmd, jsonConfig, o = {}) {
-  execSyncInherit(`cat ${jsonConfig} | jq -c | ${cmd} --headless`, o);
-}
-function execSyncInherit(cmd, o = {}) {
-  execSync(cmd, { ...o, stdio: 'inherit' });
-}
-function printTitle() {
-  execSyncInherit("echo");
-  execSyncInherit("echo A N K H O R A G E");
-  execSyncInherit("echo - - - - - - - - -");
-  execSyncInherit("echo");
-};
-async function getPromptData({ initialProjectName }) {
+async function getPromptData() {
   const projectName = await prompts.input({
     type: "text",
     name: "projectName",
@@ -48,12 +27,15 @@ async function getPromptData({ initialProjectName }) {
 
   return { projectName, accessKeyId, secretAccessKey };
 }
-function cloneBoilerplate({ boilerplate, projectName }) {
-  execSyncInherit(`git clone ${boilerplate} ${projectName}`);
-}
-function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projectName, cwd }) {
-  const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(conf.amplify, "utf-8"));
 
+async function init() {
+  const { projectName, accessKeyId, secretAccessKey } = await getPromptData();
+  const cwd = resolve(process.cwd(), projectName);
+
+  execSyncInherit(`git clone ${boilerplate} ${projectName}`);
+  execSyncInherit(`npm i && cp config/amplify .`, { cwd });
+
+  const { amplify, frontend, providers } = JSON.parse(fs.readFileSync("config/amplify_old/amplify.json", "utf-8"));
   providers.awscloudformation.region = region;
   providers.awscloudformation.accessKeyId = accessKeyId;
   providers.awscloudformation.secretAccessKey = secretAccessKey;
@@ -64,28 +46,45 @@ function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projec
     --frontend '${JSON.stringify(frontend)}' \
     --providers '${JSON.stringify(providers)}' \
     --yes`, { cwd });
-}
-function execAmplifyAddAuth({ cwd }) {
-  execSyncAwsHeadless("amplify add auth", conf.auth, { cwd })
-}
+
+  execSyncInherit("echo ✅ Amplify init");
+
+  return () => ({ cwd });
+
+};
+
 /**
  * Entrypoint
  */
-(async function createApp() {
-  printTitle();
+(async () => {
+  // 1 Amplify Init
+  const { cwd } = await init();
 
-  const common = JSON.parse(fs.readFileSync(conf.common, "utf-8"));
-  const { amplify: { flags } } = common;
-  const { projectName, accessKeyId, secretAccessKey } = await getPromptData(common);
+  // 2 Amplify Push
+  execSyncInherit("amplify push", { cwd });
 
-  const newCommon = { ...common, projectName, accessKeyId, secretAccessKey };
-  cloneBoilerplate(newCommon);
-
-  const cwd = resolve(process.cwd(), projectName);
-  execAmplifyInit({ ...newCommon, cwd });
-
-  flags.auth && execAmplifyAddAuth({ cwd });
-  flags.hosting && execSyncInherit('amplify add hosting', { cwd });
-  flags.push && execSyncInherit('amplify push', { cwd });
-  flags.publish && execSyncInherit('amplify publish', { cwd });
+  // 3 Amplify Publish
+  execSyncInherit("amplify publish", { cwd });
 })();
+
+// @todo check if cognito is created already (in theory yes do to amplify/ dir)
+// @todo 'amplify add hosting'
+// @todo 'amplify push'
+// @todo 'amplify publish'
+// @todo test signUp/signIn/signOut
+// @todo add config to only add 'profile' if auth is enabled
+// @todo clean out boilerplate...
+// @todo use initials of user for avatar component
+// @todo use identity-pool to upload avatar
+// @todo add config to add pages
+// @todo deploy a easy app (e.g. random color generator) to PlayStore
+// @todo make sure web version doesn't look like a mobile phone app
+// @todo build API's
+// @todo support 'forgot password'
+// @todo support 'edit profile'
+// @todo support app auth mode: 'always' vs 'in-app'
+// @todo deploy to AppStore (pay for Apple developer)
+// @todo start with 'npm start'
+// @todo app auto-restart automatically in Amplify?
+// @todo distinguish environments
+// @todo Deploy to custom domain
