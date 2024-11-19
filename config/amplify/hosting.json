@@ -1,8 +1,0 @@
-  {
-    "hostingCategory": "S3AndCloudFront",
-    "bucketName": "my-custom-bucket-name",
-    "distributionName": "my-cloudfront-distribution",
-    "region": "us-east-1",
-    "indexDocument": "index.html",
-    "errorDocument": "index.html"
-  }

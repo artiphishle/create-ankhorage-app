@@ -9,8 +9,7 @@ const dir = { config: resolve(__dirname, "config/amplify") };
 const conf = {
   amplify: resolve(dir.config, "amplify.json"),
   auth: resolve(dir.config, "auth.json"),
-  common: resolve(dir.config, "common.json"),
-  hosting: resolve(dir.config, "hosting.json")
+  common: resolve(dir.config, "common.json")
 };
 
 function execSyncAwsHeadless(cmd, jsonConfig, o = {}) {
@@ -86,7 +85,7 @@ function execAmplifyAddAuth({ cwd }) {
   execAmplifyInit({ ...newCommon, cwd });
 
   flags.auth && execAmplifyAddAuth({ cwd });
-  flags.hosting && execSyncAwsHeadless('amplify add hosting', conf.hosting, { cwd });
+  flags.hosting && execSyncInherit('amplify add hosting', { cwd });
   flags.push && execSyncInherit('amplify push', { cwd });
   flags.publish && execSyncInherit('amplify publish', { cwd });
 })();
