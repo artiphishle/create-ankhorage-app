@@ -1,17 +1,21 @@
 #!/usr/bin/env node
 
+require("dotenv").config();
 const fs = require("fs");
 const { resolve } = require("path");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
-const { auth } = require("./config/auth");
-const dir = { config: resolve(__dirname, "config") };
+const dir = { config: resolve(__dirname, "config/amplify") };
 const conf = {
   amplify: resolve(dir.config, "amplify.json"),
   auth: resolve(dir.config, "auth.json"),
-  common: resolve(dir.config, "common.json")
+  common: resolve(dir.config, "common.json"),
+  hosting: resolve(dir.config, "hosting.json")
 };
 
+function execSyncAwsHeadless(cmd, jsonConfig, o = {}) {
+  execSyncInherit(`cat ${jsonConfig} | jq -c | ${cmd} --headless`, o);
+}
 function execSyncInherit(cmd, o = {}) {
   execSync(cmd, { ...o, stdio: 'inherit' });
 }
@@ -29,22 +33,24 @@ async function getPromptData({ initialProjectName }) {
     initial: initialProjectName
   });
 
-  const accessKeyId = await prompts.input({
+  const accessKeyId = process.env.AWS_ACCESS_KEY_ID || await prompts.input({
     type: "text",
     name: "accessKeyId",
-    message: "Enter AWS Access Key ID:"
+    message: "Enter AWS Access Key ID:",
+    initial: ".env > AWS_ACCESS_KEY_ID"
   });
 
-  const secretAccessKey = await prompts.input({
+  const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || await prompts.input({
     type: "text",
     name: "secretAccessKey",
-    message: "Enter AWS Secret Access Key:"
+    message: "Enter AWS Secret Access Key:",
+    initial: ".env > AWS_SECRET_ACCESS_KEY"
   });
 
   return { projectName, accessKeyId, secretAccessKey };
 }
 function cloneBoilerplate({ boilerplate, projectName }) {
-  execSync(`git clone ${boilerplate} ${projectName}`);
+  execSyncInherit(`git clone ${boilerplate} ${projectName}`);
 }
 function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projectName, cwd }) {
   const { amplify, frontend, providers } = JSON.parse(fs.readFileSync(conf.amplify, "utf-8"));
@@ -61,7 +67,7 @@ function execAmplifyInit({ accessKeyId, aws: { region }, secretAccessKey, projec
     --yes`, { cwd });
 }
 function execAmplifyAddAuth({ cwd }) {
-  execSyncInherit(`cat ${conf.auth} | jq -c | amplify add auth --headless`, { cwd });
+  execSyncAwsHeadless("amplify add auth", conf.auth, { cwd })
 }
 /**
  * Entrypoint
@@ -70,19 +76,17 @@ function execAmplifyAddAuth({ cwd }) {
   printTitle();
 
   const common = JSON.parse(fs.readFileSync(conf.common, "utf-8"));
+  const { amplify: { flags } } = common;
   const { projectName, accessKeyId, secretAccessKey } = await getPromptData(common);
-  const newCommon = { ...common, projectName, accessKeyId, secretAccessKey };
-  const cwd = resolve(process.cwd(), projectName);
 
+  const newCommon = { ...common, projectName, accessKeyId, secretAccessKey };
   cloneBoilerplate(newCommon);
 
+  const cwd = resolve(process.cwd(), projectName);
   execAmplifyInit({ ...newCommon, cwd });
 
-  // Optional features (see 'flags' in config/common.json)
-  const { amplify: { flags } } = newCommon;
-
   flags.auth && execAmplifyAddAuth({ cwd });
-  flags.hosting && execSyncInherit('amplify add hosting', { cwd });
-  flags.push && execSyncInherit('amplify push -y --debug', { cwd });
+  flags.hosting && execSyncAwsHeadless('amplify add hosting', conf.hosting, { cwd });
+  flags.push && execSyncInherit('amplify push', { cwd });
   flags.publish && execSyncInherit('amplify publish', { cwd });
 })();
