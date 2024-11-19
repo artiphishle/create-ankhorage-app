@@ -7,7 +7,7 @@ import {
 
 const auth: AddAuthRequest = {
   version: 2,
-  resourceName: "ankh_cognito",
+  resourceName: "ankh-cognito",
 
   serviceConfiguration: {
     serviceName: "Cognito",
