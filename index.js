@@ -14,7 +14,7 @@ const conf = {
 };
 
 function execSyncAwsHeadless(cmd, jsonConfig, o = {}) {
-  execSyncInherit(`cat ${jsonConfig} | jq -c | ${cmd} --headless`, o);
+  execSyncInherit(`cat ${jsonConfig} | jq -c ${cmd} --headless`, o);
 }
 function execSyncInherit(cmd, o = {}) {
   execSync(cmd, { ...o, stdio: 'inherit' });
