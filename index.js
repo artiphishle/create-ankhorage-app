@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 require("dotenv").config();
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
