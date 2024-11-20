@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
 const { readFileSync, writeFileSync } = require("fs");
-const { conf: AnkhConf, EAnkhConfAuthMode } = require("./config/ankh.conf");
+const { conf: AnkhConf, EAnkhConfAuthMode } = require(resolve(__dirname, "./config/ankh.conf"));
 const execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
 
 async function getPromptData() {
