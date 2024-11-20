@@ -42,7 +42,7 @@ async function init() {
   execSyncInherit("npm i", { cwd });
   execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} ${cwd}`);
 
-  const { amplify, frontend, providers } = JSON.parse(readFileSync(dir.conf, "amplify.json", "utf-8"));
+  const { amplify, frontend, providers } = JSON.parse(readFileSync(resolve(dir.conf, "amplify.json"), "utf-8"));
   providers.awscloudformation.region = region;
   providers.awscloudformation.accessKeyId = accessKeyId;
   providers.awscloudformation.secretAccessKey = secretAccessKey;
