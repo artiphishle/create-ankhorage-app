@@ -1,14 +1,6 @@
 {
   "boilerplate": "https://github.com/artiphishle/ankh-native-app.git",
   "projectName": "ankhorage-app",
-  "amplify": {
-    "flags": {
-      "auth": true,
-      "push": true,
-      "hosting": true,
-      "publish": true
-    }
-  },
   "aws": {
     "region": "us-east-1",
     "accessKeyId": "",

@@ -41,16 +41,18 @@ async function getPromptData() {
 async function init() {
   const dir = { conf: resolve(__dirname, "config") };
   const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
-  const { projectName, accessKeyId, secretAccessKey, region } = await getPromptData();
+  const { projectName } = await getPromptData();
   const cwd = resolve(process.cwd(), projectName);
 
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
   execSyncInherit("npm i", { cwd });
-  execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} ${cwd}`);
-
-  const { amplify, frontend, providers } = JSON.parse(readFileSync(resolve(dir.conf, "amplify.json"), "utf-8"));
+  execSyncInherit(`npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest`, { cwd });
+  execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} .`, { cwd });
+  execSyncInherit("npx ampx configure telemetry disable", { cwd });
+  execSyncInherit("npm update @aws-amplify/backend @aws-amplify/backend-cli", { cwd });
 
   /*
+  const { amplify, frontend, providers } = JSON.parse(readFileSync(resolve(dir.conf, "amplify.json"), "utf-8"));
   providers.awscloudformation.region = region;
   providers.awscloudformation.accessKeyId = accessKeyId;
   providers.awscloudformation.secretAccessKey = secretAccessKey;
@@ -62,8 +64,9 @@ async function init() {
     --providers '${JSON.stringify(providers)}' \
     --yes`, { cwd });
 
-  execSyncInherit("echo ✅ Amplify init");
   */
+  execSyncInherit("echo ✅ Amplify init");
+
   return () => ({ cwd });
 
 };
@@ -72,13 +75,8 @@ async function init() {
  * Entrypoint
  */
 (async () => {
-  // 1 Amplify Init
   const { cwd } = await init();
-
-  // 2 Amplify Push
   execSyncInherit("amplify push", { cwd });
-
-  // 3 Amplify Publish
   execSyncInherit("amplify publish", { cwd });
 })();
 
