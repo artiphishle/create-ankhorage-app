@@ -3,7 +3,7 @@
     "create-ankhorage-app": "index.js"
   },
   "name": "create-ankhorage-app",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,6 +16,7 @@
     "@inquirer/prompts": "^7.1.0",
     "aws-sdk": "^2.1692.0",
     "dotenv": "^16.4.5",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.8.5",
+    "uuid": "^11.0.3"
   }
 }

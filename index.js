@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 require("dotenv").config();
+const { v4: uuidv4 } = require("uuid");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
 const execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
@@ -10,7 +11,7 @@ async function getPromptData() {
     type: "text",
     name: "projectName",
     message: "Enter the name of the project:",
-    initial: initialProjectName
+    initial: `ankh${uuidv4}`
   });
 
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID || await prompts.input({
