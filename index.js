@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 require("dotenv").config();
-const { readFileSync } = require("fs");
 const { resolve } = require("path");
 const { v4: uuidv4 } = require("uuid");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
+const { readFileSync } = require("fs");
 const execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
 
 async function getPromptData() {
@@ -37,7 +37,6 @@ async function getPromptData() {
 
   return { projectName, accessKeyId, secretAccessKey, region };
 }
-
 async function init() {
   const dir = { conf: resolve(__dirname, "config") };
   const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
@@ -51,55 +50,37 @@ async function init() {
   execSyncInherit(`npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest aws-cdk aws-cdk-lib @aws-amplify/ui-react`, { cwd });
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
   execSyncInherit("npm update @aws-amplify/backend @aws-amplify/backend-cli", { cwd });
-  execSyncInherit("npx ampx sandbox", { cwd });
-
-  /*
-  const { amplify, frontend, providers } = JSON.parse(readFileSync(resolve(dir.conf, "amplify.json"), "utf-8"));
-  providers.awscloudformation.region = region;
-  providers.awscloudformation.accessKeyId = accessKeyId;
-  providers.awscloudformation.secretAccessKey = secretAccessKey;
-
-  execSyncInherit(`amplify init \
-    --profile amplify \
-    --amplify '${JSON.stringify({ ...amplify, projectName })}' \
-    --frontend '${JSON.stringify(frontend)}' \
-    --providers '${JSON.stringify(providers)}' \
-    --yes`, { cwd });
-
-  */
-  execSyncInherit("echo ✅ Amplify init");
-
   return () => ({ cwd });
-
 };
 
-/**
- * Entrypoint
- */
+
 (async () => {
   const { cwd } = await init();
-  execSyncInherit("amplify push", { cwd });
-  execSyncInherit("amplify publish", { cwd });
-})();
+  execSync("npx ampx sandbox > .sandbox", { cwd });
+  execSync("echo $! > .sandbox_pid", { cwd });
+  const sandboxPid = readFileSync(".sandbox_pid", "utf8");
 
-// @todo check if cognito is created already (in theory yes do to amplify/ dir)
-// @todo 'amplify add hosting'
-// @todo 'amplify push'
-// @todo 'amplify publish'
-// @todo test signUp/signIn/signOut
-// @todo add config to only add 'profile' if auth is enabled
-// @todo clean out boilerplate...
-// @todo use initials of user for avatar component
-// @todo use identity-pool to upload avatar
-// @todo add config to add pages
-// @todo deploy a easy app (e.g. random color generator) to PlayStore
-// @todo make sure web version doesn't look like a mobile phone app
-// @todo build API's
-// @todo support 'forgot password'
-// @todo support 'edit profile'
-// @todo support app auth mode: 'always' vs 'in-app'
-// @todo deploy to AppStore (pay for Apple developer)
-// @todo start with 'npm start'
-// @todo app auto-restart automatically in Amplify?
-// @todo distinguish environments
-// @todo Deploy to custom domain
+  const intVal = setInterval(async () => {
+    const log = readFileSync(".sandbox", "utf8");
+    if (log.includes("✨")) {
+      clearInterval(intVal);
+
+      execSyncInherit(`kill ${sandboxPid}`, { cwd });
+      execSyncInherit("echo ✨✨✨✨✨✨✨✨✨✨✨");
+
+      const flagDeployment = await prompts.input({
+        type: "text",
+        message: "Do you want to publish?",
+        name: "startDeployment"
+      });
+
+      if (!flagDeployment) process.exit(0);
+
+      (function deploy(cwd) {
+        execSyncInherit("amplify pull", { cwd });
+        execSyncInherit("amplify publish", { cwd });
+      })(cwd);
+
+    }
+  }, 1000);
+})();
