@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 require("dotenv").config();
+const { readFileSync } = require("fs");
 const { resolve } = require("path");
 const { v4: uuidv4 } = require("uuid");
 const prompts = require("@inquirer/prompts");
@@ -40,7 +41,7 @@ async function init() {
   execSyncInherit("npm i", { cwd });
   execSyncInherit(`cp -r ${resolve(__dirname, "config/amplify")} ${cwd}`);
 
-  const { amplify, frontend, providers } = JSON.parse(fs.readFileSync("config/amplify_old/amplify.json", "utf-8"));
+  const { amplify, frontend, providers } = JSON.parse(readFileSync("config/amplify_old/amplify.json", "utf-8"));
   providers.awscloudformation.region = region;
   providers.awscloudformation.accessKeyId = accessKeyId;
   providers.awscloudformation.secretAccessKey = secretAccessKey;
