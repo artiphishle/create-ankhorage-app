@@ -37,7 +37,7 @@ async function init() {
   const cwd = resolve(process.cwd(), projectName);
 
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
-  execSyncInherit(`npm i && cp config/amplify .`, { cwd });
+  execSyncInherit(`npm i && cp config/amplify ${cwd}`);
 
   const { amplify, frontend, providers } = JSON.parse(fs.readFileSync("config/amplify_old/amplify.json", "utf-8"));
   providers.awscloudformation.region = region;
