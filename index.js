@@ -35,7 +35,7 @@ async function getPromptData() {
     initial: ".env > AWS_REGION"
   });
 
-  return { ankhAwsAuthMode, projectName, accessKeyId, secretAccessKey, region };
+  return { projectName, accessKeyId, secretAccessKey, region };
 }
 function getAnkhConf() {
   const AnkhConf = require(resolve(__dirname, "./config/ankh.json"));
