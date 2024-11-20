@@ -51,7 +51,7 @@ async function init() {
   execSyncInherit(`npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest aws-cdk aws-cdk-lib @aws-amplify/ui-react`, { cwd });
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
   execSyncInherit("npm update @aws-amplify/backend @aws-amplify/backend-cli", { cwd });
-  // execSyncInherit("npx ampx sandbox", { cwd });
+  execSyncInherit("npx ampx sandbox", { cwd });
 
   /*
   const { amplify, frontend, providers } = JSON.parse(readFileSync(resolve(dir.conf, "amplify.json"), "utf-8"));
