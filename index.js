@@ -49,6 +49,8 @@ async function init() {
   execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} ${cwd}`);
 
   const { amplify, frontend, providers } = JSON.parse(readFileSync(resolve(dir.conf, "amplify.json"), "utf-8"));
+
+  /*
   providers.awscloudformation.region = region;
   providers.awscloudformation.accessKeyId = accessKeyId;
   providers.awscloudformation.secretAccessKey = secretAccessKey;
@@ -61,7 +63,7 @@ async function init() {
     --yes`, { cwd });
 
   execSyncInherit("echo ✅ Amplify init");
-
+  */
   return () => ({ cwd });
 
 };
