@@ -45,11 +45,13 @@ async function init() {
   const cwd = resolve(process.cwd(), projectName);
 
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
-  execSyncInherit("npm i", { cwd });
-  execSyncInherit(`npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest`, { cwd });
   execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} .`, { cwd });
+  execSyncInherit(`cp ${resolve(dir.conf, "amplify_outputs.json")} .`, { cwd });
+  execSyncInherit("npm i", { cwd });
+  execSyncInherit(`npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest aws-cdk aws-cdk-lib @aws-amplify/ui-react`, { cwd });
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
   execSyncInherit("npm update @aws-amplify/backend @aws-amplify/backend-cli", { cwd });
+  // execSyncInherit("npx ampx sandbox", { cwd });
 
   /*
   const { amplify, frontend, providers } = JSON.parse(readFileSync(resolve(dir.conf, "amplify.json"), "utf-8"));
