@@ -38,14 +38,10 @@ async function getPromptData() {
   return { projectName, accessKeyId, secretAccessKey, region };
 }
 function getAnkhConf() {
-  const AnkhConf = require(resolve(__dirname, "./config/ankh.json"));
-  const conf = JSON.parse(AnkhConf) || {};
-  if (!conf.auth) conf.auth = {};
-
-  conf.auth.mode = process.env.ANKH_AWS_AUTH_MODE || AnkhConf.auth.mode || "ENTIRE";
-
-  return conf;
-}
+  const AnkhConf = require("./config/ankh.json");
+  const ANKH_AWS_AUTH_MODE = process.env.ANKH_AWS_AUTH_MODE || AnkhConf.auth.mode || "ENTIRE"
+  return { auth: { mode: ANKH_AWS_AUTH_MODE } }
+};
 
 async function init() {
   const dir = { conf: resolve(__dirname, "config") };
