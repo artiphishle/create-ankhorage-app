@@ -33,15 +33,16 @@ async function getPromptData() {
 }
 
 async function init() {
+  const dir = { conf: resolve(__dirname, "config") };
   const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
   const { projectName, accessKeyId, secretAccessKey } = await getPromptData();
   const cwd = resolve(process.cwd(), projectName);
 
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
   execSyncInherit("npm i", { cwd });
-  execSyncInherit(`cp -r ${resolve(__dirname, "config/amplify")} ${cwd}`);
+  execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} ${cwd}`);
 
-  const { amplify, frontend, providers } = JSON.parse(readFileSync("config/amplify_old/amplify.json", "utf-8"));
+  const { amplify, frontend, providers } = JSON.parse(readFileSync(dir.conf, "amplify.json", "utf-8"));
   providers.awscloudformation.region = region;
   providers.awscloudformation.accessKeyId = accessKeyId;
   providers.awscloudformation.secretAccessKey = secretAccessKey;
