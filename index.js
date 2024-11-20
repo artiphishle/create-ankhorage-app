@@ -5,8 +5,7 @@ const { resolve } = require("path");
 const { v4: uuidv4 } = require("uuid");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
-const { readFileSync, writeFileSync } = require("fs");
-const { conf: AnkhConf, EAnkhConfAuthMode } = require(resolve(__dirname, "./config/ankh.conf"));
+const { writeFileSync } = require("fs");
 const execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
 
 async function getPromptData() {
@@ -39,11 +38,13 @@ async function getPromptData() {
   return { ankhAwsAuthMode, projectName, accessKeyId, secretAccessKey, region };
 }
 function getAnkhConf() {
-  return {
-    auth: {
-      mode: process.env.ANKH_AWS_AUTH_MODE || AnkhConf.auth.mode || EAnkhConfAuthMode.Entire
-    }
-  };
+  const AnkhConf = require(resolve(__dirname, "./config/ankh.json"));
+  const conf = JSON.parse(AnkhConf) || {};
+  if (!conf.auth) conf.auth = {};
+
+  conf.auth.mode = process.env.ANKH_AWS_AUTH_MODE || AnkhConf.auth.mode || "ENTIRE";
+
+  return conf;
 }
 
 async function init() {
