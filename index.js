@@ -37,11 +37,6 @@ async function getPromptData() {
 
   return { projectName, accessKeyId, secretAccessKey, region };
 }
-function getAnkhConf() {
-  const AnkhConf = require("./config/ankh.json");
-  const ANKH_AWS_AUTH_MODE = process.env.ANKH_AWS_AUTH_MODE || AnkhConf.auth.mode || "ENTIRE"
-  return { auth: { mode: ANKH_AWS_AUTH_MODE } }
-};
 
 async function init() {
   const dir = { conf: resolve(__dirname, "config") };
@@ -51,8 +46,8 @@ async function init() {
 
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
   execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} .`, { cwd });
-  execSyncInherit(`cp ${resolve(dir.conf, "amplify_outputs.json")} .`, { cwd });
-  writeFileSync(`cp ${resolve(cwd, "conf/ankh.json")}`, JSON.stringify(getAnkhConf(), null, 2), "utf8");
+  execSyncInherit(`cp ${resolve(__dirname, "amplify_outputs.json")} .`, { cwd });
+  execSyncInherit(`cp ${resolve(dir.conf, "ankh.json")} ./conf`, { cwd });
 
   execSyncInherit(`npm i && npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest aws-cdk aws-cdk-lib @aws-amplify/ui-react`, { cwd });
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
