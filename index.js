@@ -46,7 +46,7 @@ async function init() {
 
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
   execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} .`, { cwd });
-  execSyncInherit(`cp ${resolve(__dirname, "amplify_outputs.json")} .`, { cwd });
+  execSyncInherit(`cp ${resolve(dir.conf, "amplify_outputs.json")} .`, { cwd });
   execSyncInherit(`cp ${resolve(dir.conf, "ankh.json")} ./conf`, { cwd });
 
   execSyncInherit(`npm i && npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest aws-cdk aws-cdk-lib @aws-amplify/ui-react`, { cwd });
