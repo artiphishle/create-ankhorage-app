@@ -5,7 +5,8 @@ const { resolve } = require("path");
 const { v4: uuidv4 } = require("uuid");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
-const { readFileSync } = require("fs");
+const { readFileSync, writeFileSync } = require("fs");
+const { conf: AnkhConf, EAnkhConfAuthMode } = require("./config/ankh.conf");
 const execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
 
 async function getPromptData() {
@@ -35,8 +36,16 @@ async function getPromptData() {
     initial: ".env > AWS_REGION"
   });
 
-  return { projectName, accessKeyId, secretAccessKey, region };
+  return { ankhAwsAuthMode, projectName, accessKeyId, secretAccessKey, region };
 }
+function getAnkhConf() {
+  return {
+    auth: {
+      mode: process.env.ANKH_AWS_AUTH_MODE || AnkhConf.auth.mode || EAnkhConfAuthMode.Entire
+    }
+  };
+}
+
 async function init() {
   const dir = { conf: resolve(__dirname, "config") };
   const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
@@ -46,20 +55,22 @@ async function init() {
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
   execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} .`, { cwd });
   execSyncInherit(`cp ${resolve(dir.conf, "amplify_outputs.json")} .`, { cwd });
-  execSyncInherit("npm i", { cwd });
-  execSyncInherit(`npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest aws-cdk aws-cdk-lib @aws-amplify/ui-react`, { cwd });
+  writeFileSync(`cp ${resolve(cwd, "conf/ankh.json")}`, JSON.stringify(getAnkhConf(), null, 2), "utf8");
+
+  execSyncInherit(`npm i && npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest aws-cdk aws-cdk-lib @aws-amplify/ui-react`, { cwd });
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
   execSyncInherit("npm update @aws-amplify/backend @aws-amplify/backend-cli", { cwd });
+  execSyncInherit("amplify configure", { cwd });
   return () => ({ cwd });
 };
 
-
 (async () => {
   const { cwd } = await init();
+
+  /*
   execSync("npx ampx sandbox > .sandbox", { cwd });
   execSync("echo $! > .sandbox_pid", { cwd });
   const sandboxPid = readFileSync(".sandbox_pid", "utf8");
-
   const intVal = setInterval(async () => {
     const log = readFileSync(".sandbox", "utf8");
     if (log.includes("✨")) {
@@ -83,4 +94,5 @@ async function init() {
 
     }
   }, 1000);
+  */
 })();
