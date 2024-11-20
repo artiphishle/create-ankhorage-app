@@ -28,14 +28,20 @@ async function getPromptData() {
     message: "Enter AWS Secret Access Key:",
     initial: ".env > AWS_SECRET_ACCESS_KEY"
   });
+  const region = process.env.AWS_REGION || await prompts.input({
+    type: "text",
+    name: "region",
+    message: "Enter AWS Region:",
+    initial: ".env > AWS_REGION"
+  });
 
-  return { projectName, accessKeyId, secretAccessKey };
+  return { projectName, accessKeyId, secretAccessKey, region };
 }
 
 async function init() {
   const dir = { conf: resolve(__dirname, "config") };
   const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
-  const { projectName, accessKeyId, secretAccessKey } = await getPromptData();
+  const { projectName, accessKeyId, secretAccessKey, region } = await getPromptData();
   const cwd = resolve(process.cwd(), projectName);
 
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
