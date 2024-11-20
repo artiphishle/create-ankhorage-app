@@ -40,7 +40,7 @@ async function getPromptData() {
 
 async function init() {
   const dir = { conf: resolve(__dirname, "config") };
-  const boilerplate = "https://github.com/artiphishle/ankh-native-app@latest";
+  const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
   const { projectName, accessKeyId, secretAccessKey, region } = await getPromptData();
   const cwd = resolve(process.cwd(), projectName);
 
