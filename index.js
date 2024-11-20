@@ -32,6 +32,7 @@ async function getPromptData() {
 }
 
 async function init() {
+  const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
   const { projectName, accessKeyId, secretAccessKey } = await getPromptData();
   const cwd = resolve(process.cwd(), projectName);
 
