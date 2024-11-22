@@ -4,34 +4,34 @@ Creates a Android, iOS & web app and setups AWS Amplify.
 
 Will allow to generate a app (CMS for Android, iOS & Web all-in-one)
 
+## Prerequisites
+
+Make sure the 'amplify' command is available globally:
+
+```sh
+npm install -g @aws-amplify/cli
+```
+
 ## Quickstart
 
 ```sh
-# Make sure the 'amplify' command is available globally
-npm install -g @aws-amplify/cli
 
-# Sit back & enjoy!
+# 1 Create the app (assuming app name: myApp)
 npx create-ankhorage-app
+
+# 2 Change to app directory
+cd myApp
+
+# 3 Start local sandbox
+npx ampx sandbox
+
+# 4 Open a new terminal tab & start local 'web' app
+npm run web
+
+# Yes! App is running at: http://localhost:8081
 ```
-
-## Next
-
-This project is under active development:
-
-- Auto-Mock dev environment: `amplify mock`
-- Custom domain support
 
 ## Commands
-
-### Ankhorage
-
-Delete all resources from generated app:
-
-```sh
-# ⚠️ This will also delete user pool and users
-
-cd {appDir} && amplify delete
-```
 
 ### AWS
 
