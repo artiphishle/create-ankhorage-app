@@ -5,7 +5,8 @@ const { resolve } = require("path");
 const { v4: uuidv4 } = require("uuid");
 const prompts = require("@inquirer/prompts");
 const { execSync } = require("child_process");
-const { writeFileSync } = require("fs");
+const { generateClient } = require("aws-amplify/data");
+const { AnkhConfig } = require("./config/ankh");
 const execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
 
 async function getPromptData() {
@@ -37,27 +38,50 @@ async function getPromptData() {
 
   return { projectName, accessKeyId, secretAccessKey, region };
 }
-
 async function init() {
   const dir = { conf: resolve(__dirname, "config") };
   const boilerplate = "https://github.com/artiphishle/ankh-native-app.git";
   const { projectName } = await getPromptData();
   const cwd = resolve(process.cwd(), projectName);
+  const pkgs = {
+    dev: [
+      "@aws-amplify/backend@latest",
+      "@aws-amplify/backend-cli@latest",
+      "@aws-amplify/ui-react",
+      "aws-cdk",
+      "aws-cdk-lib",
+    ]
+  };
 
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
   execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} .`, { cwd });
   execSyncInherit(`cp ${resolve(dir.conf, "amplify_outputs.json")} .`, { cwd });
-  execSyncInherit(`cp ${resolve(dir.conf, "ankh.json")} ./conf`, { cwd });
+  execSyncInherit(`cp ${resolve(dir.conf, "ankh.ts")} ./conf`, { cwd });
 
-  execSyncInherit(`npm i && npm add --save-dev @aws-amplify/backend@latest @aws-amplify/backend-cli@latest aws-cdk aws-cdk-lib @aws-amplify/ui-react`, { cwd });
+  execSyncInherit(`npm i && npm add --save-dev ${pkgs.dev.join(" ")}`, { cwd });
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
   execSyncInherit("npm update @aws-amplify/backend @aws-amplify/backend-cli", { cwd });
   execSyncInherit("amplify configure", { cwd });
   return () => ({ cwd });
 };
+async function createPages(pages) {
+  const { models: { Page } } = generateClient();
+  const fns = pages.forEach((p) => function () { return Page.create(p) })
 
+  try { await Promise.allSettled(fns); }
+  catch (error) { console.error(error); }
+}
+
+/**
+ * ANKHORAGE
+ * @entrypoint
+ */
 (async () => {
+  // 1. Init Amplify app & Cognito
   const { cwd } = await init();
+
+  // 2. Create app pages
+  await createPages(AnkhConfig.pages);
 
   /*
   execSync("npx ampx sandbox > .sandbox", { cwd });
