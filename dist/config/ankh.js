@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AnkhConfig = void 0;
-const uuid_1 = require("uuid");
-exports.AnkhConfig = {
+import { v4 } from 'uuid';
+export const AnkhConfig = {
     auth: {
         mode: 'IN_APP',
         cognito: {
@@ -27,12 +24,12 @@ exports.AnkhConfig = {
     },
     pages: [
         {
-            id: (0, uuid_1.v4)(),
+            id: v4(),
             name: 'Home',
             route: '/',
             uis: [
                 {
-                    id: (0, uuid_1.v4)(),
+                    id: v4(),
                     name: 'Text',
                     conf: {
                         value: 'HomeText',
@@ -41,23 +38,23 @@ exports.AnkhConfig = {
             ],
         },
         {
-            id: (0, uuid_1.v4)(),
+            id: v4(),
             name: 'Profile',
             route: '/profile',
             uis: [
                 {
-                    id: (0, uuid_1.v4)(),
+                    id: v4(),
                     name: 'Profile',
                 },
             ],
         },
         {
-            id: (0, uuid_1.v4)(),
+            id: v4(),
             name: 'Settings',
             route: '/settings',
             uis: [
                 {
-                    id: (0, uuid_1.v4)(),
+                    id: v4(),
                     name: 'Settings',
                 },
             ],
