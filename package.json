@@ -2,8 +2,9 @@
   "bin": {
     "create-ankhorage-app": "./dist/index.js"
   },
+  "type": "module",
   "name": "create-ankhorage-app",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
@@ -34,6 +35,6 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.6.2"
   }
 }

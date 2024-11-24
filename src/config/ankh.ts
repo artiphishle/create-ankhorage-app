@@ -1,23 +1,23 @@
-import type { AmplifyAuthProps } from '@/../../node_modules/@aws-amplify/backend-auth/lib/factory.d'
-import { v4 } from 'uuid'
+import type { AmplifyAuthProps } from '@/../../node_modules/@aws-amplify/backend-auth/lib/factory.d';
+import { v4 } from 'uuid';
 
 interface IAnkhUi {
-  readonly id: string
-  readonly name: string
-  readonly conf?: any
+  readonly id: string;
+  readonly name: string;
+  readonly conf?: Record<string, unknown>;
 }
 export interface IAnkhPage {
-  readonly id: string
-  readonly name: string
-  readonly route: string
-  readonly uis: IAnkhUi[]
+  readonly id: string;
+  readonly name: string;
+  readonly route: string;
+  readonly uis: IAnkhUi[];
 }
 interface IAnkhConfig {
   readonly auth: {
-    readonly mode: 'IN_APP' | 'ENTIRE'
-    readonly cognito: AmplifyAuthProps
-  }
-  readonly pages: IAnkhPage[]
+    readonly mode: 'IN_APP' | 'ENTIRE';
+    readonly cognito: AmplifyAuthProps;
+  };
+  readonly pages: IAnkhPage[];
 }
 
 export const AnkhConfig: IAnkhConfig = {
@@ -81,4 +81,4 @@ export const AnkhConfig: IAnkhConfig = {
       ],
     },
   ],
-}
+};

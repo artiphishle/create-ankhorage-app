@@ -19,7 +19,8 @@ export interface AddAuthRequest {
 /**
  * Defines AWS Cognito parameters.
  */
-export type CognitoServiceConfiguration = BaseCognitoServiceConfiguration & (NoCognitoIdentityPool | CognitoIdentityPool);
+export type CognitoServiceConfiguration = BaseCognitoServiceConfiguration &
+  (NoCognitoIdentityPool | CognitoIdentityPool);
 
 /**
  * Configuration that applies to all Cognito configuration.
@@ -144,7 +145,8 @@ export interface CognitoUserPoolConfiguration {
 }
 
 export type CognitoAutoVerifiedAttributesConfiguration = Array<
-  CognitoAutoVerifyEmailConfiguration | CognitoAutoVerifyPhoneNumberConfiguration
+  | CognitoAutoVerifyEmailConfiguration
+  | CognitoAutoVerifyPhoneNumberConfiguration
 >;
 
 export interface CognitoAutoVerifyPhoneNumberConfiguration {
@@ -181,7 +183,13 @@ export interface CognitoOAuthConfiguration {
   /**
    * The oAuth scopes granted by signin.
    */
-  oAuthScopes: ('PHONE' | 'EMAIL' | 'OPENID' | 'PROFILE' | 'AWS.COGNITO.SIGNIN.USER.ADMIN')[];
+  oAuthScopes: (
+    | 'PHONE'
+    | 'EMAIL'
+    | 'OPENID'
+    | 'PROFILE'
+    | 'AWS.COGNITO.SIGNIN.USER.ADMIN'
+  )[];
   /**
    * If defined, users will be able to login with the specified social providers.
    */
@@ -233,7 +241,9 @@ interface SignInWithAppleSocialProviderConfig {
 /**
  * Defines a Cognito oAuth social provider
  */
-export type CognitoSocialProviderConfiguration = SocialProviderConfig | SignInWithAppleSocialProviderConfig;
+export type CognitoSocialProviderConfiguration =
+  | SocialProviderConfig
+  | SignInWithAppleSocialProviderConfig;
 
 export interface CognitoPasswordPolicy {
   minimumLength?: number;

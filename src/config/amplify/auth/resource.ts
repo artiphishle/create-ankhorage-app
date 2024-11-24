@@ -1,4 +1,4 @@
 import { defineAuth } from '@aws-amplify/backend';
-import { AnkhConfig } from "../../ankh"
+import { AnkhConfig } from '../../ankh';
 
-export const auth = defineAuth({ ...AnkhConfig.auth.cognito })
+export const auth = defineAuth({ ...AnkhConfig.auth.cognito });
