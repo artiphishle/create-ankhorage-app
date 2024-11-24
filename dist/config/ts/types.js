@@ -1,27 +1,30 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CognitoUserPropertyVerified = exports.CognitoUserProperty = exports.CognitoUserAliasAttributes = exports.CognitoUserPoolSigninMethod = exports.CognitoPasswordConstraint = void 0;
 /**
  * Password constraints that can be applied to Cognito user pools.
  */
-export var CognitoPasswordConstraint;
+var CognitoPasswordConstraint;
 (function (CognitoPasswordConstraint) {
     CognitoPasswordConstraint["REQUIRE_LOWERCASE"] = "REQUIRE_LOWERCASE";
     CognitoPasswordConstraint["REQUIRE_UPPERCASE"] = "REQUIRE_UPPERCASE";
     CognitoPasswordConstraint["REQUIRE_DIGIT"] = "REQUIRE_DIGIT";
     CognitoPasswordConstraint["REQUIRE_SYMBOL"] = "REQUIRE_SYMBOL";
-})(CognitoPasswordConstraint || (CognitoPasswordConstraint = {}));
-export var CognitoUserPoolSigninMethod;
+})(CognitoPasswordConstraint || (exports.CognitoPasswordConstraint = CognitoPasswordConstraint = {}));
+var CognitoUserPoolSigninMethod;
 (function (CognitoUserPoolSigninMethod) {
     CognitoUserPoolSigninMethod["USERNAME"] = "USERNAME";
     CognitoUserPoolSigninMethod["EMAIL"] = "EMAIL";
     CognitoUserPoolSigninMethod["PHONE_NUMBER"] = "PHONE_NUMBER";
     CognitoUserPoolSigninMethod["EMAIL_AND_PHONE_NUMBER"] = "EMAIL_AND_PHONE_NUMBER";
-})(CognitoUserPoolSigninMethod || (CognitoUserPoolSigninMethod = {}));
-export var CognitoUserAliasAttributes;
+})(CognitoUserPoolSigninMethod || (exports.CognitoUserPoolSigninMethod = CognitoUserPoolSigninMethod = {}));
+var CognitoUserAliasAttributes;
 (function (CognitoUserAliasAttributes) {
     CognitoUserAliasAttributes["PREFERRED_USERNAME"] = "PREFERRED_USERNAME";
     CognitoUserAliasAttributes["EMAIL"] = "EMAIL";
     CognitoUserAliasAttributes["PHONE_NUMBER"] = "PHONE_NUMBER";
-})(CognitoUserAliasAttributes || (CognitoUserAliasAttributes = {}));
-export var CognitoUserProperty;
+})(CognitoUserAliasAttributes || (exports.CognitoUserAliasAttributes = CognitoUserAliasAttributes = {}));
+var CognitoUserProperty;
 (function (CognitoUserProperty) {
     CognitoUserProperty["ADDRESS"] = "ADDRESS";
     CognitoUserProperty["BIRTHDATE"] = "BIRTHDATE";
@@ -40,12 +43,12 @@ export var CognitoUserProperty;
     CognitoUserProperty["UPDATED_AT"] = "UPDATED_AT";
     CognitoUserProperty["WEBSITE"] = "WEBSITE";
     CognitoUserProperty["ZONE_INFO"] = "ZONE_INFO";
-})(CognitoUserProperty || (CognitoUserProperty = {}));
+})(CognitoUserProperty || (exports.CognitoUserProperty = CognitoUserProperty = {}));
 /**
  * Additional Cognito user properties that can only be read, not written.
  */
-export var CognitoUserPropertyVerified;
+var CognitoUserPropertyVerified;
 (function (CognitoUserPropertyVerified) {
     CognitoUserPropertyVerified["EMAIL_VERIFIED"] = "EMAIL_VERIFIED";
     CognitoUserPropertyVerified["PHONE_NUMBER_VERIFIED"] = "PHONE_NUMBER_VERIFIED";
-})(CognitoUserPropertyVerified || (CognitoUserPropertyVerified = {}));
+})(CognitoUserPropertyVerified || (exports.CognitoUserPropertyVerified = CognitoUserPropertyVerified = {}));

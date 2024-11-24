@@ -1,26 +1,29 @@
-import { CognitoPasswordConstraint, CognitoUserPoolSigninMethod, CognitoUserProperty, } from './types';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.auth = void 0;
+const types_1 = require("./types");
 const auth = {
     version: 2,
     resourceName: 'ankhcognito',
     serviceConfiguration: {
         serviceName: 'Cognito',
         userPoolConfiguration: {
-            signinMethod: CognitoUserPoolSigninMethod.EMAIL,
+            signinMethod: types_1.CognitoUserPoolSigninMethod.EMAIL,
             requiredSignupAttributes: [
-                CognitoUserProperty.EMAIL,
-                CognitoUserProperty.NICKNAME,
+                types_1.CognitoUserProperty.EMAIL,
+                types_1.CognitoUserProperty.NICKNAME,
             ],
             passwordPolicy: {
                 minimumLength: 8,
                 additionalConstraints: [
-                    CognitoPasswordConstraint.REQUIRE_LOWERCASE,
-                    CognitoPasswordConstraint.REQUIRE_UPPERCASE,
-                    CognitoPasswordConstraint.REQUIRE_DIGIT,
-                    CognitoPasswordConstraint.REQUIRE_SYMBOL,
+                    types_1.CognitoPasswordConstraint.REQUIRE_LOWERCASE,
+                    types_1.CognitoPasswordConstraint.REQUIRE_UPPERCASE,
+                    types_1.CognitoPasswordConstraint.REQUIRE_DIGIT,
+                    types_1.CognitoPasswordConstraint.REQUIRE_SYMBOL,
                 ],
             },
         },
         includeIdentityPool: true,
     },
 };
-export { auth };
+exports.auth = auth;

@@ -1,9 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.s3AndCloudFrontHosting = exports.amplifyHosting = void 0;
 const amplifyHosting = {
     hostingCategory: 'amplifyhosting',
     targetBranch: 'main',
     enablePullRequestPreview: true,
     repository: 'https://github.com/username/repository',
 };
+exports.amplifyHosting = amplifyHosting;
 const s3AndCloudFrontHosting = {
     hostingCategory: 'S3AndCloudFront',
     bucketName: 'my-custom-bucket-name',
@@ -12,4 +16,4 @@ const s3AndCloudFrontHosting = {
     indexDocument: 'index.html',
     errorDocument: 'index.html',
 };
-export { amplifyHosting, s3AndCloudFrontHosting };
+exports.s3AndCloudFrontHosting = s3AndCloudFrontHosting;
