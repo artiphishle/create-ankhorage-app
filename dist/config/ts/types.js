@@ -52,3 +52,4 @@ var CognitoUserPropertyVerified;
     CognitoUserPropertyVerified["EMAIL_VERIFIED"] = "EMAIL_VERIFIED";
     CognitoUserPropertyVerified["PHONE_NUMBER_VERIFIED"] = "PHONE_NUMBER_VERIFIED";
 })(CognitoUserPropertyVerified || (exports.CognitoUserPropertyVerified = CognitoUserPropertyVerified = {}));
+//# sourceMappingURL=types.js.map

@@ -17,3 +17,4 @@ const s3AndCloudFrontHosting = {
     errorDocument: 'index.html',
 };
 exports.s3AndCloudFrontHosting = s3AndCloudFrontHosting;
+//# sourceMappingURL=hosting.js.map

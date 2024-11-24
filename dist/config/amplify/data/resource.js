@@ -26,3 +26,4 @@ exports.data = (0, backend_1.defineData)({
         apiKeyAuthorizationMode: { expiresInDays: 30 },
     },
 });
+//# sourceMappingURL=resource.js.map
