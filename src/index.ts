@@ -1,39 +1,32 @@
-#!/usr/bin/env node
+import dotenv from "dotenv";
+import { resolve } from "path";
+import { v4 } from "uuid";
+import prompts from "@inquirer/prompts";
+import { execSync } from "child_process";
+import { generateClient } from "aws-amplify/data";
+import { AnkhConfig } from "./config/ankh";
+import type { IAnkhPage } from "./config/ankh";
+import type { Schema } from './config/amplify/data/resource'
 
-require("dotenv").config();
-const { resolve } = require("path");
-const { v4: uuidv4 } = require("uuid");
-const prompts = require("@inquirer/prompts");
-const { execSync } = require("child_process");
-const { generateClient } = require("aws-amplify/data");
-const { AnkhConfig } = require("./config/ankh");
-const execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
+dotenv.config();
+const execSyncInherit = (cmd: string, o = {}) => execSync(cmd, { ...o, stdio: 'inherit' });
 
 async function getPromptData() {
-  const initial = `ankh${uuidv4()}`;
   const projectName = await prompts.input({
-    initial,
-    type: "text",
-    name: "projectName",
+    default: `ankh${v4()}`,
     message: "Enter the name of the project:",
   });
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID || await prompts.input({
-    type: "text",
-    name: "accessKeyId",
+    default: ".env > AWS_ACCESS_KEY_ID",
     message: "Enter AWS Access Key ID:",
-    initial: ".env > AWS_ACCESS_KEY_ID"
   });
   const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || await prompts.input({
-    type: "text",
-    name: "secretAccessKey",
+    default: ".env > AWS_SECRET_ACCESS_KEY",
     message: "Enter AWS Secret Access Key:",
-    initial: ".env > AWS_SECRET_ACCESS_KEY"
   });
   const region = process.env.AWS_REGION || await prompts.input({
-    type: "text",
-    name: "region",
+    default: ".env > AWS_REGION",
     message: "Enter AWS Region:",
-    initial: ".env > AWS_REGION"
   });
 
   return { projectName, accessKeyId, secretAccessKey, region };
@@ -62,11 +55,11 @@ async function init() {
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
   execSyncInherit("npm update @aws-amplify/backend @aws-amplify/backend-cli", { cwd });
   execSyncInherit("amplify configure", { cwd });
-  return () => ({ cwd });
+  return { cwd };
 };
-async function createPages(pages) {
-  const { models: { Page } } = generateClient();
-  const fns = pages.forEach((p) => function () { return Page.create(p) })
+async function createPages(pages: IAnkhPage[]) {
+  const { models } = generateClient<Schema>();
+  const fns = pages.map((page) => () => models.Page.create(page))
 
   try { await Promise.allSettled(fns); }
   catch (error) { console.error(error); }

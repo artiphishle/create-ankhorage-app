@@ -6,7 +6,7 @@ interface IAnkhUi {
   readonly name: string
   readonly conf?: any
 }
-interface IAnkhPage {
+export interface IAnkhPage {
   readonly id: string
   readonly name: string
   readonly route: string
