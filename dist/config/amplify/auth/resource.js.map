@@ -1,1 +1,1 @@
-{"version":3,"file":"resource.js","sourceRoot":"","sources":["../../../../src/config/amplify/auth/resource.ts"],"names":[],"mappings":";;;AAAA,kDAAkD;AAClD,qCAAwC;AAE3B,QAAA,IAAI,GAAG,IAAA,oBAAU,oBAAM,iBAAU,CAAC,IAAI,CAAC,OAAO,EAAG,CAAC"}
+{"version":3,"file":"resource.js","sourceRoot":"","sources":["../../../../src/config/amplify/auth/resource.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,sBAAsB,CAAC;AAClD,OAAO,EAAE,UAAU,EAAE,MAAM,YAAY,CAAC;AAExC,MAAM,CAAC,MAAM,IAAI,GAAG,UAAU,mBAAM,UAAU,CAAC,IAAI,CAAC,OAAO,EAAG,CAAC"}
