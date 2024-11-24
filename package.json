@@ -3,7 +3,7 @@
     "create-ankhorage-app": "./dist/index.js"
   },
   "name": "create-ankhorage-app",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
