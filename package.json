@@ -2,9 +2,8 @@
   "bin": {
     "create-ankhorage-app": "./dist/index.js"
   },
-  "type": "module",
   "name": "create-ankhorage-app",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
