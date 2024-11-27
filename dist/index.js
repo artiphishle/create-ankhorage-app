@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import dotenv from 'dotenv';
 import { resolve } from 'path';
 import { v4 } from 'uuid';
-import prompts from '@inquirer/prompts';
+import { input } from '@inquirer/prompts';
 import { execSync } from 'child_process';
 import { generateClient } from 'aws-amplify/data';
 import { AnkhConfig } from './config/ankh';
@@ -19,22 +19,22 @@ dotenv.config();
 const execSyncInherit = (cmd, o = {}) => execSync(cmd, Object.assign(Object.assign({}, o), { stdio: 'inherit' }));
 function getPromptData() {
     return __awaiter(this, void 0, void 0, function* () {
-        const projectName = yield prompts.input({
+        const projectName = yield input({
             default: `ankh${v4()}`,
             message: 'Enter the name of the project:',
         });
         const accessKeyId = process.env.AWS_ACCESS_KEY_ID ||
-            (yield prompts.input({
+            (yield input({
                 default: '.env > AWS_ACCESS_KEY_ID',
                 message: 'Enter AWS Access Key ID:',
             }));
         const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY ||
-            (yield prompts.input({
+            (yield input({
                 default: '.env > AWS_SECRET_ACCESS_KEY',
                 message: 'Enter AWS Secret Access Key:',
             }));
         const region = process.env.AWS_REGION ||
-            (yield prompts.input({
+            (yield input({
                 default: '.env > AWS_REGION',
                 message: 'Enter AWS Region:',
             }));
@@ -102,7 +102,7 @@ function createPages(pages) {
         execSyncInherit(`kill ${sandboxPid}`, { cwd });
         execSyncInherit("echo ✨✨✨✨✨✨✨✨✨✨✨");
   
-        const flagDeployment = await prompts.input({
+        const flagDeployment = await input({
           type: "text",
           message: "Do you want to publish?",
           name: "startDeployment"
