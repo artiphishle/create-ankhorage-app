@@ -1,27 +1,28 @@
-import { CognitoPasswordConstraint, CognitoUserPoolSigninMethod, CognitoUserProperty, } from './types';
-const auth = {
-    version: 2,
-    resourceName: 'ankhcognito',
-    serviceConfiguration: {
-        serviceName: 'Cognito',
-        userPoolConfiguration: {
-            signinMethod: CognitoUserPoolSigninMethod.EMAIL,
-            requiredSignupAttributes: [
-                CognitoUserProperty.EMAIL,
-                CognitoUserProperty.NICKNAME,
-            ],
-            passwordPolicy: {
-                minimumLength: 8,
-                additionalConstraints: [
-                    CognitoPasswordConstraint.REQUIRE_LOWERCASE,
-                    CognitoPasswordConstraint.REQUIRE_UPPERCASE,
-                    CognitoPasswordConstraint.REQUIRE_DIGIT,
-                    CognitoPasswordConstraint.REQUIRE_SYMBOL,
-                ],
-            },
-        },
-        includeIdentityPool: true,
+// src/config/ts/auth.ts
+var auth = {
+  version: 2,
+  resourceName: "ankhcognito",
+  serviceConfiguration: {
+    serviceName: "Cognito",
+    userPoolConfiguration: {
+      signinMethod: "EMAIL" /* EMAIL */,
+      requiredSignupAttributes: [
+        "EMAIL" /* EMAIL */,
+        "NICKNAME" /* NICKNAME */
+      ],
+      passwordPolicy: {
+        minimumLength: 8,
+        additionalConstraints: [
+          "REQUIRE_LOWERCASE" /* REQUIRE_LOWERCASE */,
+          "REQUIRE_UPPERCASE" /* REQUIRE_UPPERCASE */,
+          "REQUIRE_DIGIT" /* REQUIRE_DIGIT */,
+          "REQUIRE_SYMBOL" /* REQUIRE_SYMBOL */
+        ]
+      }
     },
+    includeIdentityPool: true
+  }
 };
-export { auth };
-//# sourceMappingURL=auth.js.map
+export {
+  auth
+};
