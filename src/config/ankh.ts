@@ -1,5 +1,16 @@
-import type { AmplifyAuthProps } from '@/../../node_modules/@aws-amplify/backend-auth/lib/factory.d';
 import { v4 } from 'uuid';
+
+export interface AmplifyAuthProps {
+  loginWith: {
+    email: boolean;
+  };
+  userAttributes: Record<string, { 
+    dataType: string; 
+    mutable: boolean; 
+    minLen?: number; 
+    maxLen?: number; 
+  }>;
+}
 
 interface IAnkhUi {
   readonly id: string;

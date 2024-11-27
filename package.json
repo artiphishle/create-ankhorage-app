@@ -4,7 +4,7 @@
   },
   "type": "module",
   "name": "create-ankhorage-app",
-  "version": "2.1.13",
+  "version": "2.1.14",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
