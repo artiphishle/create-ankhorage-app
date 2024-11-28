@@ -4,7 +4,7 @@
   },
   "name": "create-ankhorage-app",
   "type": "module",
-  "version": "2.1.22",
+  "version": "2.1.23",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup --config ./src/tsup.config.ts",
@@ -36,6 +36,7 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "tsup": "^8.3.5",
     "typescript": "^5.6.2"
   }

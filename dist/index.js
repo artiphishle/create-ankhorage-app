@@ -1,79 +1,15 @@
 #!/usr/bin/env node
+import {
+  AnkhConfig
+} from "./chunk-DPRFHS4T.js";
 
 // src/index.ts
 import dotenv from "dotenv";
 import { resolve } from "path";
-import { v4 as v42 } from "uuid";
+import { v4 } from "uuid";
 import { input } from "@inquirer/prompts";
 import { execSync } from "child_process";
 import { generateClient } from "aws-amplify/data";
-
-// src/config/ankh.ts
-import { v4 } from "uuid";
-var AnkhConfig = {
-  auth: {
-    mode: "IN_APP",
-    cognito: {
-      loginWith: {
-        email: true
-      },
-      userAttributes: {
-        "custom:firstName": {
-          dataType: "String",
-          mutable: true,
-          minLen: 2,
-          maxLen: 25
-        },
-        "custom:lastName": {
-          dataType: "String",
-          mutable: true,
-          minLen: 2,
-          maxLen: 25
-        }
-      }
-    }
-  },
-  pages: [
-    {
-      id: v4(),
-      name: "Home",
-      route: "/",
-      uis: [
-        {
-          id: v4(),
-          name: "Text",
-          conf: {
-            value: "HomeText"
-          }
-        }
-      ]
-    },
-    {
-      id: v4(),
-      name: "Profile",
-      route: "/profile",
-      uis: [
-        {
-          id: v4(),
-          name: "Profile"
-        }
-      ]
-    },
-    {
-      id: v4(),
-      name: "Settings",
-      route: "/settings",
-      uis: [
-        {
-          id: v4(),
-          name: "Settings"
-        }
-      ]
-    }
-  ]
-};
-
-// src/index.ts
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 dotenv.config();
@@ -81,7 +17,7 @@ var __dirname = dirname(fileURLToPath(import.meta.url));
 var execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: "inherit" });
 async function getPromptData() {
   const projectName = await input({
-    default: `ankh${v42()}`,
+    default: `ankh${v4()}`,
     message: "Enter the name of the project:"
   });
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID || await input({
