@@ -65,7 +65,7 @@ async function init() {
 
   execSyncInherit(`npm i && npm add --save-dev ${pkgs.dev.join(' ')}`, { cwd });
   execSyncInherit('npx ampx configure telemetry disable', { cwd });
-  execSyncInherit('amplify configure', { cwd });
+  // execSyncInherit('amplify configure', { cwd });
   return { cwd };
 }
 async function createPages(pages: IAnkhPage[]) {
@@ -86,11 +86,11 @@ async function createPages(pages: IAnkhPage[]) {
 (async () => {
   // 1. Init Amplify app & Cognito
   await init();
-  execSyncInherit('✅ Init');
+  execSyncInherit('echo ✅ Init');
 
   // 2. Create app pages
   await createPages(AnkhConfig.pages);
-  execSyncInherit(`✅ Created ${AnkhConfig.pages.length} Pages`);
+  execSyncInherit(`echo ✅ Created ${AnkhConfig.pages.length} Pages`);
 
   /*
   execSync("npx ampx sandbox > .sandbox", { cwd });
