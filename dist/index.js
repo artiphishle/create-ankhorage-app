@@ -54,9 +54,6 @@ async function init() {
   execSyncInherit(`cp ${resolve(dir.conf, "ankh.ts")} ./conf`, { cwd });
   execSyncInherit(`npm i && npm add --save-dev ${pkgs.dev.join(" ")}`, { cwd });
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
-  execSyncInherit("npm update @aws-amplify/backend @aws-amplify/backend-cli", {
-    cwd
-  });
   execSyncInherit("amplify configure", { cwd });
   return { cwd };
 }
@@ -71,5 +68,7 @@ async function createPages(pages) {
 }
 (async () => {
   await init();
+  execSyncInherit("\u2705 Init");
   await createPages(AnkhConfig.pages);
+  execSyncInherit(`\u2705 Created ${AnkhConfig.pages.length} Pages`);
 })();
