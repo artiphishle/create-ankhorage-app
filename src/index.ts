@@ -1,15 +1,19 @@
 #!/usr/bin/env node
+
 import dotenv from 'dotenv';
 import { resolve } from 'path';
 import { v4 } from 'uuid';
-import {input} from '@inquirer/prompts';
+import { input } from '@inquirer/prompts';
 import { execSync } from 'child_process';
 import { generateClient } from 'aws-amplify/data';
 import { AnkhConfig } from './config/ankh';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import type { IAnkhPage } from './config/ankh';
 import type { Schema } from './config/amplify/data/resource';
 
 dotenv.config();
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const execSyncInherit = (cmd: string, o = {}) =>
   execSync(cmd, { ...o, stdio: 'inherit' });
 

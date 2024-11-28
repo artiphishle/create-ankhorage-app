@@ -4,12 +4,15 @@ export interface AmplifyAuthProps {
   loginWith: {
     email: boolean;
   };
-  userAttributes: Record<string, { 
-    dataType: string; 
-    mutable: boolean; 
-    minLen?: number; 
-    maxLen?: number; 
-  }>;
+  userAttributes: Record<
+    string,
+    {
+      dataType: string;
+      mutable: boolean;
+      minLen?: number;
+      maxLen?: number;
+    }
+  >;
 }
 
 interface IAnkhUi {
