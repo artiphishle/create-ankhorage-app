@@ -4,11 +4,11 @@
   },
   "name": "create-ankhorage-app",
   "type": "module",
-  "version": "2.1.19",
+  "version": "2.1.20",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup --config ./src/tsup.config.ts",
-    "postbuild": "cp -r src/config dist/.",
+    "postbuild": "cp -r ./src/config/amplify ./dist/config/.",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint 'src/**/*.{js,ts}'",

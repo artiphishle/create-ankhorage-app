@@ -1,9 +1,0 @@
-{
-  "boilerplate": "https://github.com/artiphishle/ankh-native-app.git",
-  "projectName": "ankhorage-app",
-  "aws": {
-    "region": "us-east-1",
-    "accessKeyId": "",
-    "secretAccessKey": ""
-  }
-}
