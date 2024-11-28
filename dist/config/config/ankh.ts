@@ -1,0 +1,98 @@
+import { v4 } from 'uuid';
+
+export interface AmplifyAuthProps {
+  loginWith: {
+    email: boolean;
+  };
+  userAttributes: Record<
+    string,
+    {
+      dataType: string;
+      mutable: boolean;
+      minLen?: number;
+      maxLen?: number;
+    }
+  >;
+}
+
+interface IAnkhUi {
+  readonly id: string;
+  readonly name: string;
+  readonly conf?: Record<string, unknown>;
+}
+export interface IAnkhPage {
+  readonly id: string;
+  readonly name: string;
+  readonly route: string;
+  readonly uis: IAnkhUi[];
+}
+interface IAnkhConfig {
+  readonly auth: {
+    readonly mode: 'IN_APP' | 'ENTIRE';
+    readonly cognito: AmplifyAuthProps;
+  };
+  readonly pages: IAnkhPage[];
+}
+
+export const AnkhConfig: IAnkhConfig = {
+  auth: {
+    mode: 'IN_APP',
+    cognito: {
+      loginWith: {
+        email: true,
+      },
+      userAttributes: {
+        'custom:firstName': {
+          dataType: 'String',
+          mutable: true,
+          minLen: 2,
+          maxLen: 25,
+        },
+        'custom:lastName': {
+          dataType: 'String',
+          mutable: true,
+          minLen: 2,
+          maxLen: 25,
+        },
+      },
+    },
+  },
+  pages: [
+    {
+      id: v4(),
+      name: 'Home',
+      route: '/',
+      uis: [
+        {
+          id: v4(),
+          name: 'Text',
+          conf: {
+            value: 'HomeText',
+          },
+        },
+      ],
+    },
+    {
+      id: v4(),
+      name: 'Profile',
+      route: '/profile',
+      uis: [
+        {
+          id: v4(),
+          name: 'Profile',
+        },
+      ],
+    },
+    {
+      id: v4(),
+      name: 'Settings',
+      route: '/settings',
+      uis: [
+        {
+          id: v4(),
+          name: 'Settings',
+        },
+      ],
+    },
+  ],
+};
