@@ -1,34 +1,26 @@
+import type { AmplifyAuthProps } from '@/../../node_modules/@aws-amplify/backend-auth/lib/factory.d';
 import { v4 } from 'uuid';
 
-export interface AmplifyAuthProps {
-  loginWith: {
-    email: boolean;
-  };
-  userAttributes: Record<
-    string,
-    {
-      dataType: string;
-      mutable: boolean;
-      minLen?: number;
-      maxLen?: number;
-    }
-  >;
+export enum EAnkhAuthMode {
+  Entire = 'ENTIRE',
+  InApp = 'IN_APP',
 }
-
 interface IAnkhUi {
   readonly id: string;
   readonly name: string;
   readonly conf?: Record<string, unknown>;
 }
-export interface IAnkhPage {
+interface IAnkhPage {
   readonly id: string;
   readonly name: string;
   readonly route: string;
+  readonly title: string;
   readonly uis: IAnkhUi[];
+  readonly icon?: string;
 }
 interface IAnkhConfig {
   readonly auth: {
-    readonly mode: 'IN_APP' | 'ENTIRE';
+    readonly mode: EAnkhAuthMode;
     readonly cognito: AmplifyAuthProps;
   };
   readonly pages: IAnkhPage[];
@@ -36,7 +28,7 @@ interface IAnkhConfig {
 
 export const AnkhConfig: IAnkhConfig = {
   auth: {
-    mode: 'IN_APP',
+    mode: EAnkhAuthMode.InApp,
     cognito: {
       loginWith: {
         email: true,
@@ -60,8 +52,10 @@ export const AnkhConfig: IAnkhConfig = {
   pages: [
     {
       id: v4(),
-      name: 'Home',
+      name: 'index',
       route: '/',
+      title: 'Home',
+      icon: 'home',
       uis: [
         {
           id: v4(),
@@ -74,8 +68,10 @@ export const AnkhConfig: IAnkhConfig = {
     },
     {
       id: v4(),
-      name: 'Profile',
+      name: 'profile',
       route: '/profile',
+      title: 'Profile',
+      icon: '',
       uis: [
         {
           id: v4(),
@@ -85,8 +81,10 @@ export const AnkhConfig: IAnkhConfig = {
     },
     {
       id: v4(),
-      name: 'Settings',
+      name: 'settings',
       route: '/settings',
+      title: 'Settings',
+      icon: 'cog',
       uis: [
         {
           id: v4(),
