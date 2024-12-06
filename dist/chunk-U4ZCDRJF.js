@@ -1,8 +1,37 @@
 // src/config/ankh.ts
 import { v4 } from "uuid";
+var EAnkhAuthMode = /* @__PURE__ */ ((EAnkhAuthMode2) => {
+  EAnkhAuthMode2["Entire"] = "ENTIRE";
+  EAnkhAuthMode2["InApp"] = "IN_APP";
+  return EAnkhAuthMode2;
+})(EAnkhAuthMode || {});
+var COLORS = {
+  WHITE: "#fff",
+  RED: "#cf1444",
+  BLACK: "#000"
+};
 var AnkhConfig = {
+  brand: {
+    themes: [
+      {
+        name: "light",
+        colors: {
+          default: {
+            text: COLORS.BLACK,
+            bg: COLORS.WHITE
+          },
+          primary: {
+            text: COLORS.WHITE,
+            bg: COLORS.RED
+          }
+        },
+        active: true,
+        logo: "logo.jpg"
+      }
+    ]
+  },
   auth: {
-    mode: "IN_APP",
+    mode: "IN_APP" /* InApp */,
     cognito: {
       loginWith: {
         email: true
@@ -26,8 +55,10 @@ var AnkhConfig = {
   pages: [
     {
       id: v4(),
-      name: "Home",
+      name: "index",
       route: "/",
+      title: "Home",
+      icon: "home",
       uis: [
         {
           id: v4(),
@@ -40,8 +71,10 @@ var AnkhConfig = {
     },
     {
       id: v4(),
-      name: "Profile",
+      name: "profile",
       route: "/profile",
+      title: "Profile",
+      icon: "account",
       uis: [
         {
           id: v4(),
@@ -51,8 +84,10 @@ var AnkhConfig = {
     },
     {
       id: v4(),
-      name: "Settings",
+      name: "settings",
       route: "/settings",
+      title: "Settings",
+      icon: "cog",
       uis: [
         {
           id: v4(),
@@ -64,5 +99,6 @@ var AnkhConfig = {
 };
 
 export {
+  EAnkhAuthMode,
   AnkhConfig
 };

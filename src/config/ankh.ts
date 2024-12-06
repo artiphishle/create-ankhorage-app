@@ -10,7 +10,7 @@ interface IAnkhUi {
   readonly name: string;
   readonly conf?: Record<string, unknown>;
 }
-interface IAnkhPage {
+export interface IAnkhPage {
   readonly id: string;
   readonly name: string;
   readonly route: string;
@@ -18,7 +18,21 @@ interface IAnkhPage {
   readonly uis: IAnkhUi[];
   readonly icon?: string;
 }
+interface IAnkhTheme {
+  readonly name: string;
+  readonly colors: {
+    primary: { text: string; bg: string };
+    default: { text: string; bg: string };
+  };
+  readonly active?: boolean;
+  readonly logo?: string;
+}
+interface IAnkhBrand {
+  readonly logo?: string;
+  readonly themes: IAnkhTheme[];
+}
 interface IAnkhConfig {
+  readonly brand: IAnkhBrand;
   readonly auth: {
     readonly mode: EAnkhAuthMode;
     readonly cognito: AmplifyAuthProps;
@@ -26,7 +40,32 @@ interface IAnkhConfig {
   readonly pages: IAnkhPage[];
 }
 
+const COLORS = {
+  WHITE: '#fff',
+  RED: '#cf1444',
+  BLACK: '#000',
+};
+
 export const AnkhConfig: IAnkhConfig = {
+  brand: {
+    themes: [
+      {
+        name: 'light',
+        colors: {
+          default: {
+            text: COLORS.BLACK,
+            bg: COLORS.WHITE,
+          },
+          primary: {
+            text: COLORS.WHITE,
+            bg: COLORS.RED,
+          },
+        },
+        active: true,
+        logo: 'logo.jpg',
+      },
+    ],
+  },
   auth: {
     mode: EAnkhAuthMode.InApp,
     cognito: {
@@ -71,7 +110,7 @@ export const AnkhConfig: IAnkhConfig = {
       name: 'profile',
       route: '/profile',
       title: 'Profile',
-      icon: '',
+      icon: 'account',
       uis: [
         {
           id: v4(),
