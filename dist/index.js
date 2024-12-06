@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {
   AnkhConfig
-} from "./chunk-U4ZCDRJF.js";
+} from "./chunk-KESW4KRV.js";
 
 // src/index.ts
 import dotenv from "dotenv";

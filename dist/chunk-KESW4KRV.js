@@ -84,6 +84,29 @@ var AnkhConfig = {
     },
     {
       id: v4(),
+      name: "lesson",
+      route: "/lesson/1",
+      title: "Lesson 1",
+      icon: "school",
+      uis: [
+        {
+          id: v4(),
+          name: "card",
+          conf: {
+            title: "Title here",
+            content: "<video />",
+            actions: [
+              {
+                name: "markAsComplete",
+                onClick: true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      id: v4(),
       name: "settings",
       route: "/settings",
       title: "Settings",
