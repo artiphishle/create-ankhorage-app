@@ -4,7 +4,7 @@
   },
   "name": "create-ankhorage-app",
   "type": "module",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup --config ./src/tsup.config.ts",
@@ -24,6 +24,7 @@
     "aws-amplify": "^6.9.0",
     "aws-sdk": "^2.1692.0",
     "dotenv": "^16.4.5",
+    "react-native-paper": "^5.12.5",
     "shelljs": "^0.8.5",
     "uuid": "^11.0.3"
   },

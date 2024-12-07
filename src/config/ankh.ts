@@ -1,21 +1,79 @@
-import type { AmplifyAuthProps } from '@/../../node_modules/@aws-amplify/backend-auth/lib/factory.d';
+import type { AmplifyAuthProps } from '@aws-amplify/backend-auth/lib/factory.d';
+import {
+  Appbar,
+  Button,
+  Card,
+  Dialog,
+  IconButton,
+  Snackbar,
+  TextInput,
+  type AppbarProps,
+  type ButtonProps,
+  type CardProps,
+  type DialogProps,
+  type IconButtonProps,
+  type SnackbarProps,
+  type TextInputProps,
+} from 'react-native-paper';
+import { type ReactVideoProps } from 'react-native-video';
 import { v4 } from 'uuid';
+
+import AnkhUiList, { type AnkhUiListProps } from '@/lib/ui/components/List';
+import VideoPlayer from '@/lib/ui/components/VideoPlayer';
+
+enum EAnkhUi {
+  Appbar = 'Appbar',
+  Button = 'Button',
+  Card = 'Card',
+  Dialog = 'Dialog',
+  IconButton = 'IconButton',
+  AnkhUiList = 'AnkhUiList',
+  Snackbar = 'Snackbar',
+  TextInput = 'TextInput',
+  VideoPlayer = 'VideoPlayer',
+}
+type UiPropsMap = {
+  [EAnkhUi.Appbar]: AppbarProps;
+  [EAnkhUi.Button]: ButtonProps;
+  [EAnkhUi.Card]: CardProps;
+  [EAnkhUi.Dialog]: DialogProps;
+  [EAnkhUi.IconButton]: IconButtonProps;
+  [EAnkhUi.AnkhUiList]: AnkhUiListProps;
+  [EAnkhUi.Snackbar]: SnackbarProps;
+  [EAnkhUi.TextInput]: TextInputProps;
+  [EAnkhUi.VideoPlayer]: ReactVideoProps;
+};
+export const AnkhUiMap: Record<EAnkhUi, React.ComponentType<any>> = {
+  [EAnkhUi.Appbar]: Appbar,
+  [EAnkhUi.Button]: Button,
+  [EAnkhUi.Card]: Card,
+  [EAnkhUi.Dialog]: Dialog,
+  [EAnkhUi.IconButton]: IconButton,
+  [EAnkhUi.AnkhUiList]: AnkhUiList,
+  [EAnkhUi.Snackbar]: Snackbar,
+  [EAnkhUi.TextInput]: TextInput,
+  [EAnkhUi.VideoPlayer]: VideoPlayer,
+};
+export type IAnkhUi = {
+  [K in keyof UiPropsMap]: {
+    id: string;
+    ui: K;
+    props?: UiPropsMap[K];
+    uis?: IAnkhUi[];
+  };
+}[keyof UiPropsMap]; // Flatten into a union
 
 export enum EAnkhAuthMode {
   Entire = 'ENTIRE',
   InApp = 'IN_APP',
 }
-interface IAnkhUi {
-  readonly id: string;
-  readonly name: string;
-  readonly conf?: Record<string, unknown>;
-}
+
 export interface IAnkhPage {
   readonly id: string;
   readonly name: string;
   readonly route: string;
   readonly title: string;
-  readonly uis: IAnkhUi[];
+  readonly uis?: IAnkhUi[];
   readonly icon?: string;
 }
 interface IAnkhTheme {
@@ -95,15 +153,6 @@ export const AnkhConfig: IAnkhConfig = {
       route: '/',
       title: 'Home',
       icon: 'home',
-      uis: [
-        {
-          id: v4(),
-          name: 'Text',
-          conf: {
-            value: 'HomeText',
-          },
-        },
-      ],
     },
     {
       id: v4(),
@@ -111,12 +160,6 @@ export const AnkhConfig: IAnkhConfig = {
       route: '/profile',
       title: 'Profile',
       icon: 'account',
-      uis: [
-        {
-          id: v4(),
-          name: 'Profile',
-        },
-      ],
     },
     {
       id: v4(),
@@ -127,14 +170,38 @@ export const AnkhConfig: IAnkhConfig = {
       uis: [
         {
           id: v4(),
-          name: 'card',
-          conf: {
-            title: 'Title here',
-            content: '<video />',
-            actions: [
+          ui: EAnkhUi.VideoPlayer,
+          props: {
+            source: {
+              uri: 'http://localhost:8081/assets/videos/lesson-01.mp4',
+            },
+          },
+        },
+        {
+          id: v4(),
+          ui: EAnkhUi.AnkhUiList,
+          props: {
+            id: v4(),
+            items: [
               {
-                name: 'markAsComplete',
-                onClick: true,
+                description: 'Lorem ipsum and dollar Schein.',
+                title: 'Uno',
+                icon: { left: 'play-circle' },
+              },
+              {
+                description: 'Billie Gates wieder besser jetzt.',
+                title: 'Dos',
+                icon: { left: 'play-circle' },
+              },
+              {
+                description: 'Die drei bäumen sich auf zu einer Triangle.',
+                title: 'Tree',
+                icon: { left: 'play-circle' },
+              },
+              {
+                description: 'Der Rosenquark ist ein essbarer Stein.',
+                title: 'Quark',
+                icon: { left: 'play-circle' },
               },
             ],
           },
@@ -147,12 +214,6 @@ export const AnkhConfig: IAnkhConfig = {
       route: '/settings',
       title: 'Settings',
       icon: 'cog',
-      uis: [
-        {
-          id: v4(),
-          name: 'Settings',
-        },
-      ],
     },
   ],
 };
