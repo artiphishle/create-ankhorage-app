@@ -51,7 +51,6 @@ async function init() {
   execSyncInherit(`git clone ${boilerplate} ${projectName}`);
   execSyncInherit(`cp -r ${resolve(dir.conf, "amplify")} .`, { cwd });
   execSyncInherit(`cp ${resolve(dir.conf, "amplify_outputs.json")} .`, { cwd });
-  execSyncInherit(`cp ${resolve(dir.conf, "ankh.ts")} ./config/.`, { cwd });
   execSyncInherit(`npm i && npm add --save-dev ${pkgs.dev.join(" ")}`, { cwd });
   execSyncInherit("npx ampx configure telemetry disable", { cwd });
   return { cwd };
