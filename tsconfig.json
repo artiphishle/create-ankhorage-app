@@ -15,9 +15,9 @@
     "paths": { "@/*": ["./src/*"] },
     "resolveJsonModule": true,
     "sourceMap": true,
+    "skipLibCheck": true,
     "strict": true,
-    "target": "ESNext",
-    "skipLibCheck": true
+    "target": "ESNext"
   },
   "exclude": ["node_modules", "dist"],
   "include": ["src"]

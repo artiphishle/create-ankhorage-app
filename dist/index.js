@@ -1,16 +1,12 @@
 #!/usr/bin/env node
+import { execSync } from 'child_process';
 import dotenv from 'dotenv';
 import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import { v4 } from 'uuid';
 import { input } from '@inquirer/prompts';
-import { execSync } from 'child_process';
 import { generateClient } from 'aws-amplify/data';
-import 'react-native-paper';
-import '@/lib/ui/components/List';
-import '@/lib/ui/components/VideoPlayer';
-import { fileURLToPath } from 'url';
 
-// src/config/ankh.ts
 var COLORS = {
   WHITE: "#fff",
   RED: "#cf1444",
@@ -129,6 +125,8 @@ var AnkhConfig = {
     }
   ]
 };
+
+// src/index.ts
 dotenv.config();
 var __dirname = dirname(fileURLToPath(import.meta.url));
 var execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: "inherit" });

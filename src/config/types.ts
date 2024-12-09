@@ -1,13 +1,4 @@
-import React from 'react';
-import type { AmplifyAuthProps } from '@aws-amplify/backend-auth/lib/factory.d';
 import {
-  Appbar,
-  Button,
-  Card,
-  Dialog,
-  IconButton,
-  Snackbar,
-  TextInput,
   type AppbarProps,
   type ButtonProps,
   type CardProps,
@@ -16,9 +7,9 @@ import {
   type SnackbarProps,
   type TextInputProps,
 } from 'react-native-paper';
-import { type ReactVideoProps } from 'react-native-video';
-import AnkhUiList, { type AnkhUiListProps } from '@/lib/ui/components/List';
-import VideoPlayer from '@/lib/ui/components/VideoPlayer';
+import type { AmplifyAuthProps } from '@aws-amplify/backend-auth/lib/factory.d';
+import type { ReactVideoProps } from 'react-native-video';
+import type { AnkhUiListProps } from '@/lib/ui/components/List';
 
 export enum EAnkhUi {
   Appbar = 'Appbar',
@@ -41,18 +32,6 @@ type UiPropsMap = {
   [EAnkhUi.Snackbar]: SnackbarProps;
   [EAnkhUi.TextInput]: TextInputProps;
   [EAnkhUi.VideoPlayer]: ReactVideoProps;
-};
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const AnkhUiMap: Record<EAnkhUi, React.ComponentType<any>> = {
-  [EAnkhUi.Appbar]: Appbar,
-  [EAnkhUi.Button]: Button,
-  [EAnkhUi.Card]: Card,
-  [EAnkhUi.Dialog]: Dialog,
-  [EAnkhUi.IconButton]: IconButton,
-  [EAnkhUi.AnkhUiList]: AnkhUiList,
-  [EAnkhUi.Snackbar]: Snackbar,
-  [EAnkhUi.TextInput]: TextInput,
-  [EAnkhUi.VideoPlayer]: VideoPlayer,
 };
 export type IAnkhUi = {
   [K in keyof UiPropsMap]: {
@@ -79,8 +58,8 @@ export interface IAnkhPage {
 interface IAnkhTheme {
   readonly name: string;
   readonly colors: {
-    primary: { text: string; bg: string };
-    default: { text: string; bg: string };
+    readonly primary: { text: string; bg: string };
+    readonly default: { text: string; bg: string };
   };
   readonly active?: boolean;
   readonly logo?: string;

@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 
+import { execSync } from 'child_process';
 import dotenv from 'dotenv';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { v4 } from 'uuid';
 import { input } from '@inquirer/prompts';
-import { execSync } from 'child_process';
 import { generateClient } from 'aws-amplify/data';
 import { AnkhConfig } from './config/ankh';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import type { Schema } from './config/amplify/data/resource';
-import { IAnkhPage } from './config/types';
+import type { IAnkhPage } from './config/types';
 
 dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
