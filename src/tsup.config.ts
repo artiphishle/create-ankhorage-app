@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
   dts: true,
-  entry: ['src/index.ts', 'src/config/ankh.ts'],
+  entry: ['src/index.ts'],
   format: ['esm'],
   splitting: true,
   sourcemap: false,
