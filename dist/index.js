@@ -1,146 +1,15 @@
 #!/usr/bin/env node
+import {
+  AnkhConfig
+} from "./chunk-XMMJJUDC.js";
 
 // src/index.ts
 import dotenv from "dotenv";
 import { resolve } from "path";
-import { v4 as v42 } from "uuid";
+import { v4 } from "uuid";
 import { input } from "@inquirer/prompts";
 import { execSync } from "child_process";
 import { generateClient } from "aws-amplify/data";
-
-// src/config/ankh.ts
-import {
-  Appbar,
-  Button,
-  Card,
-  Dialog,
-  IconButton,
-  Snackbar,
-  TextInput
-} from "react-native-paper";
-import { v4 } from "uuid";
-import AnkhUiList from "@/lib/ui/components/List";
-import VideoPlayer from "@/lib/ui/components/VideoPlayer";
-var COLORS = {
-  WHITE: "#fff",
-  RED: "#cf1444",
-  BLACK: "#000"
-};
-var AnkhConfig = {
-  brand: {
-    themes: [
-      {
-        name: "light",
-        colors: {
-          default: {
-            text: COLORS.BLACK,
-            bg: COLORS.WHITE
-          },
-          primary: {
-            text: COLORS.WHITE,
-            bg: COLORS.RED
-          }
-        },
-        active: true,
-        logo: "logo.jpg"
-      }
-    ]
-  },
-  auth: {
-    mode: "IN_APP" /* InApp */,
-    cognito: {
-      loginWith: {
-        email: true
-      },
-      userAttributes: {
-        "custom:firstName": {
-          dataType: "String",
-          mutable: true,
-          minLen: 2,
-          maxLen: 25
-        },
-        "custom:lastName": {
-          dataType: "String",
-          mutable: true,
-          minLen: 2,
-          maxLen: 25
-        }
-      }
-    }
-  },
-  pages: [
-    {
-      id: v4(),
-      name: "index",
-      route: "/",
-      title: "Home",
-      icon: "home"
-    },
-    {
-      id: v4(),
-      name: "profile",
-      route: "/profile",
-      title: "Profile",
-      icon: "account"
-    },
-    {
-      id: v4(),
-      name: "lesson",
-      route: "/lesson/1",
-      title: "Lesson 1",
-      icon: "school",
-      uis: [
-        {
-          id: v4(),
-          ui: "VideoPlayer" /* VideoPlayer */,
-          props: {
-            source: {
-              uri: "http://localhost:8081/assets/videos/lesson-01.mp4"
-            }
-          }
-        },
-        {
-          id: v4(),
-          ui: "AnkhUiList" /* AnkhUiList */,
-          props: {
-            id: v4(),
-            items: [
-              {
-                description: "Lorem ipsum and dollar Schein.",
-                title: "Uno",
-                icon: { left: "play-circle" }
-              },
-              {
-                description: "Billie Gates wieder besser jetzt.",
-                title: "Dos",
-                icon: { left: "play-circle" }
-              },
-              {
-                description: "Die drei b\xE4umen sich auf zu einer Triangle.",
-                title: "Tree",
-                icon: { left: "play-circle" }
-              },
-              {
-                description: "Der Rosenquark ist ein essbarer Stein.",
-                title: "Quark",
-                icon: { left: "play-circle" }
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      id: v4(),
-      name: "settings",
-      route: "/settings",
-      title: "Settings",
-      icon: "cog"
-    }
-  ]
-};
-
-// src/index.ts
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 dotenv.config();
@@ -148,7 +17,7 @@ var __dirname = dirname(fileURLToPath(import.meta.url));
 var execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: "inherit" });
 async function getPromptData() {
   const projectName = await input({
-    default: `ankh${v42()}`,
+    default: `ankh${v4()}`,
     message: "Enter the name of the project:"
   });
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID || await input({

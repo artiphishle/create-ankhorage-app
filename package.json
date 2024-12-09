@@ -4,7 +4,7 @@
   },
   "name": "create-ankhorage-app",
   "type": "module",
-  "version": "2.3.11",
+  "version": "2.3.12",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup --config ./src/tsup.config.ts",
