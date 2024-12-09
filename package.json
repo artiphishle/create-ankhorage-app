@@ -1,10 +1,10 @@
 {
   "bin": {
-    "create-ankhorage-app": "./dist/index.js"
+    "create-ankhorage-app": "dist/index.js"
   },
   "name": "create-ankhorage-app",
   "type": "module",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup --config ./src/tsup.config.ts",
