@@ -20,6 +20,7 @@ import { v4 } from 'uuid';
 
 import AnkhUiList, { type AnkhUiListProps } from '@/lib/ui/components/List';
 import VideoPlayer from '@/lib/ui/components/VideoPlayer';
+import React from 'react';
 
 enum EAnkhUi {
   Appbar = 'Appbar',
@@ -43,6 +44,7 @@ type UiPropsMap = {
   [EAnkhUi.TextInput]: TextInputProps;
   [EAnkhUi.VideoPlayer]: ReactVideoProps;
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AnkhUiMap: Record<EAnkhUi, React.ComponentType<any>> = {
   [EAnkhUi.Appbar]: Appbar,
   [EAnkhUi.Button]: Button,

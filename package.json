@@ -4,7 +4,7 @@
   },
   "name": "create-ankhorage-app",
   "type": "module",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup --config ./src/tsup.config.ts",
@@ -31,11 +31,13 @@
   "devDependencies": {
     "@aws-amplify/backend": "^1.8.0",
     "@types/node": "^22.9.3",
+    "@types/react": "^18.3.14",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
     "eslint": "^9.15.0",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
+    "react-native-video": "^6.8.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.3.5",
