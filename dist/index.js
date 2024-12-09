@@ -1,26 +1,16 @@
 #!/usr/bin/env node
-
-// src/index.ts
-import dotenv from "dotenv";
-import { resolve } from "path";
-import { v4 as v42 } from "uuid";
-import { input } from "@inquirer/prompts";
-import { execSync } from "child_process";
-import { generateClient } from "aws-amplify/data";
+import dotenv from 'dotenv';
+import { dirname, resolve } from 'path';
+import { v4 } from 'uuid';
+import { input } from '@inquirer/prompts';
+import { execSync } from 'child_process';
+import { generateClient } from 'aws-amplify/data';
+import 'react-native-paper';
+import '@/lib/ui/components/List';
+import '@/lib/ui/components/VideoPlayer';
+import { fileURLToPath } from 'url';
 
 // src/config/ankh.ts
-import {
-  Appbar,
-  Button,
-  Card,
-  Dialog,
-  IconButton,
-  Snackbar,
-  TextInput
-} from "react-native-paper";
-import { v4 } from "uuid";
-import AnkhUiList from "@/lib/ui/components/List";
-import VideoPlayer from "@/lib/ui/components/VideoPlayer";
 var COLORS = {
   WHITE: "#fff",
   RED: "#cf1444",
@@ -139,16 +129,12 @@ var AnkhConfig = {
     }
   ]
 };
-
-// src/index.ts
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 dotenv.config();
 var __dirname = dirname(fileURLToPath(import.meta.url));
 var execSyncInherit = (cmd, o = {}) => execSync(cmd, { ...o, stdio: "inherit" });
 async function getPromptData() {
   const projectName = await input({
-    default: `ankh${v42()}`,
+    default: `ankh${v4()}`,
     message: "Enter the name of the project:"
   });
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID || await input({

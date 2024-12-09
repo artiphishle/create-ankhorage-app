@@ -9,8 +9,8 @@ import { generateClient } from 'aws-amplify/data';
 import { AnkhConfig } from './config/ankh';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import type { IAnkhPage } from './config/ankh';
 import type { Schema } from './config/amplify/data/resource';
+import { IAnkhPage } from './config/types';
 
 dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
