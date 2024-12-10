@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { EAnkhAuthMode, EAnkhUi, IAnkhConfig } from './types';
+import { EAnkhAuthMode, EAnkhUi, type IAnkhConfig } from './types';
 
 const COLORS = {
   WHITE: '#fff',

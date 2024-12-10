@@ -4,11 +4,11 @@
   },
   "name": "create-ankhorage-app",
   "type": "module",
-  "version": "2.3.17",
+  "version": "2.3.18",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsup --config ./src/tsup.config.ts",
-    "postbuild": "mkdir ./dist/config && cp -r ./src/config/amplify ./dist/config/. && cp ./src/config/amplify_outputs.json ./dist/config/. && cp ./src/config/ankh.ts ./dist/config/.",
+    "build": "tsc",
+    "postbuild": "cp -r ./src/config ./dist/config",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
     "lint": "eslint 'src/**/*.{js,ts}'",
@@ -40,7 +40,6 @@
     "react-native-video": "^6.8.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "tsup": "^8.3.5",
     "typescript": "^5.6.2"
   }
 }

@@ -1,24 +1,25 @@
 {
   "compilerOptions": {
-    "alwaysStrict": true,
-    "baseUrl": "./",
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
+    "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "paths": { "@/*": ["./src/*"] },
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "skipLibCheck": true,
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
     "strict": true,
-    "target": "ESNext"
+    "jsx": "react-native",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "exclude": ["node_modules", "dist"],
-  "include": ["src"]
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }
